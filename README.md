@@ -64,7 +64,7 @@ The migrations seed the root scope and two global roles, `administrator` and `vi
 
 | Page | What it does |
 |---|---|
-| `/ua/users`, `/ua/users/new`, `/ua/users/{id}` | User list, create, and detail with deactivate and the assignments panel (assign, revoke, effective permissions) |
+| `/ua/users`, `/ua/users/new`, `/ua/users/{id}` | User list, create, and detail with deactivate and the embedded assignments sections (assign, revoke, effective permissions) |
 | `/ua/scopes`, `/ua/scopes/new`, `/ua/scopes/{id}` | The scope tree the caller can see, create, and detail with rename, move, delete and the scope's roles |
 | `/ua/roles/new`, `/ua/roles/{id}` | Create a role under a scope; detail with rename, inheritable, grant and revoke, delete |
 

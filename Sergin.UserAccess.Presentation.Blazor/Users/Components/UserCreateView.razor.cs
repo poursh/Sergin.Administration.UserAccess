@@ -1,18 +1,16 @@
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
 using Sergin.UserAccess.Application.Contracts.Users.Commands.Create;
 using Sergin.UserAccess.Domain.Users;
 using Sergin.UserAccess.Presentation.Blazor.Users.Models;
 
-namespace Sergin.UserAccess.Presentation.Blazor.Users.Pages;
+namespace Sergin.UserAccess.Presentation.Blazor.Users.Components;
 
-public sealed partial class CreateUserPage
+/// <summary>The form for a new user; saving opens the new user.</summary>
+public sealed partial class UserCreateView
 {
     private readonly NewUserFormModel model = new();
 
-    private MudForm form = default!;
-    private bool isValid;
     private bool submitting;
     private Func<object, string, Task<IEnumerable<string>>> validation = default!;
 
@@ -31,11 +29,10 @@ public sealed partial class CreateUserPage
     [Inject]
     private IUiErrorPresenter ErrorPresenter { get; set; } = default!;
 
-    [Inject]
-    private NavigationManager Navigation { get; set; } = default!;
+    [CascadingParameter]
+    private SerginViewHost Host { get; set; } = SerginViewHost.Unhosted;
 
-    // An EventCallback, not a bare delegate: splatted onto MudForm's <form> it gets a receiver, so the
-    // page re-renders after SubmitAsync.
+    // Created on this view, so it re-renders after SubmitAsync; SerginFormView invokes it once every field is valid.
     private EventCallback OnSubmit => EventCallback.Factory.Create(this, SubmitAsync);
 
     protected override void OnInitialized() => validation = FormValidator.RulesFor(ToCommand);
@@ -45,13 +42,6 @@ public sealed partial class CreateUserPage
 
     private async Task SubmitAsync()
     {
-        await form.ValidateAsync();
-
-        if (!form.IsValid)
-        {
-            return;
-        }
-
         submitting = true;
 
         ErrorOr<CreateUserCommandResponse> result = await Dispatcher.SendAsync(ToCommand());
@@ -66,6 +56,6 @@ public sealed partial class CreateUserPage
             return;
         }
 
-        Navigation.NavigateTo($"/ua/users/{result.Value.Id}");
+        await Host.LeaveAsync($"/ua/users/{result.Value.Id}");
     }
 }

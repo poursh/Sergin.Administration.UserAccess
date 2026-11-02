@@ -1,0 +1,71 @@
+<SerginAggregateDetailView Title="Role" Trail="Trail" Problem="problem" Ready="@(role is not null)" Actions="Actions"
+                           FieldsTitle="@role?.Name">
+    <HeaderActions>
+        <SerginReloadButton OnReload="LoadAsync" />
+        <SerginCopyLinkButton />
+    </HeaderActions>
+    <Fields>
+        @if (role is not null)
+        {
+            <SerginDetailField Label="Code" Value="@role.Name" />
+            <SerginDetailField Label="Owned by">
+                <MudLink Href="@($"/ua/scopes/{role.OwnerScopeId}")">@role.OwnerScopeName</MudLink>
+            </SerginDetailField>
+            <SerginDetailField Label="Inheritable">
+                <MudSwitch T="bool" Value="role.IsInheritable" ValueChanged="SetInheritableAsync" Color="Color.Primary"
+                           Disabled="busy" Label="Scopes below the owner can use it too" />
+            </SerginDetailField>
+        }
+    </Fields>
+    <Entities>
+        @if (role is not null)
+        {
+            <MudForm @ref="form" Model="model" Validation="@validation" @bind-IsValid="isValid"
+                     SuppressImplicitSubmission="false" onsubmit="@OnRename">
+                <MudCard Outlined="true" Class="mb-4">
+                    <MudCardContent>
+                        <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.Name" Label="Code" For="@(() => model.Name)" Immediate="true" />
+                        <MudCheckBox T="bool" @bind-Value="cascade" Label="When deleting, also revoke every assignment of this role" />
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                                   Color="Color.Primary" Disabled="@(busy || !isValid)">Rename</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudForm>
+
+            <SerginEntityListView Title="Permissions" Count="role.Permissions.Count">
+                @foreach (PermissionDefinition definition in GrantedDefined)
+                {
+                    <MudChip T="string" Value="@definition.Permission.Value" OnClose="@(_ => RevokeAsync(definition.Permission.Value))">@Localizer[definition.Label].Value</MudChip>
+                }
+                @if (GrantedUnknown.Count > 0)
+                {
+                    <MudText Typo="Typo.subtitle2">Unknown</MudText>
+                    @foreach (string permission in GrantedUnknown)
+                    {
+                        <MudChip T="string" Value="@permission" OnClose="@(_ => RevokeAsync(permission))">@permission</MudChip>
+                    }
+                }
+                <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" @bind-Value="permissionToGrant" ToStringFunc="@LabelOf" Label="Add permission">
+                    @foreach (PermissionCatalogModule module in Catalog.Grouped())
+                    {
+                        <PermissionSubheader>@PermissionLabels.Module(Localizer, module.Schema)</PermissionSubheader>
+                        @foreach (PermissionCatalogGroup group in module.Groups)
+                        {
+                            <PermissionSubheader Class="pl-6">@group.Name</PermissionSubheader>
+                            @foreach (PermissionDefinition definition in group.Permissions.Where(definition => !IsGranted(definition)))
+                            {
+                                <MudSelectItem T="string" Value="@definition.Permission.Value">
+                                    @Localizer[definition.Label].Value <MudText Typo="Typo.caption">@definition.Permission.Value</MudText>
+                                </MudSelectItem>
+                            }
+                        }
+                    }
+                </MudSelect>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" Class="mt-2"
+                           Disabled="@(busy || string.IsNullOrEmpty(permissionToGrant))" OnClick="GrantAsync">Add</MudButton>
+            </SerginEntityListView>
+        }
+    </Entities>
+</SerginAggregateDetailView>
