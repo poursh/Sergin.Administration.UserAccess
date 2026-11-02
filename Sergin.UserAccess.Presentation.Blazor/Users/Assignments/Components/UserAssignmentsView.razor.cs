@@ -11,8 +11,11 @@ using Sergin.UserAccess.Presentation.Blazor.Users.Assignments.Models;
 
 namespace Sergin.UserAccess.Presentation.Blazor.Users.Assignments.Components;
 
-/// <summary>A user's assignments (FR-6, FR-12), the assign form (FR-7, FR-8, FR-10) and what they add up to (FR-11).</summary>
-public sealed partial class UserAssignmentsPanel
+/// <summary>
+/// A user's assignments (FR-6, FR-12), the assign form (FR-7, FR-8, FR-10) and what they add up to (FR-11), as two
+/// sections embedded in <c>UserDetailView</c>.
+/// </summary>
+public sealed partial class UserAssignmentsView
 {
     private NewAssignmentFormModel model = new();
 
@@ -37,6 +40,15 @@ public sealed partial class UserAssignmentsPanel
         scopes = tree.IsError ? [] : [.. tree.Value.OrderBy(scope => scope.Depth).ThenBy(scope => scope.Name, StringComparer.CurrentCulture)];
 
         await LoadAsync();
+    }
+
+    /// <summary>Reads the assignments and effective permissions again; the detail view's reload calls it.</summary>
+    public async Task ReloadAsync()
+    {
+        await LoadAsync();
+
+        // Called from the parent's event, which re-renders the parent only: the user id did not change.
+        StateHasChanged();
     }
 
     private async Task LoadAsync()

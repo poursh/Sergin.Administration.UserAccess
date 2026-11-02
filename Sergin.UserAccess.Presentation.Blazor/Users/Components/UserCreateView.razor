@@ -1,0 +1,4 @@
+<SerginFormView Title="New user" Trail="Trail"
+                Model="model" Validation="validation" OnSubmit="OnSubmit" Submitting="submitting" SubmitLabel="Create" CancelHref="/ua/users">
+    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.UserName" Label="User name" For="@(() => model.UserName)" Immediate="true" />
+</SerginFormView>

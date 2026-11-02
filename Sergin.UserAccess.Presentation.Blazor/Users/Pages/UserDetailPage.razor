@@ -1,23 +1,4 @@
-﻿@page "/ua/users/{Id:guid}"
+@page "/ua/users/{Id:guid}"
+@layout SerginPageLayout
 
-<PageTitle>User</PageTitle>
-
-<SerginBreadcrumbs Trail="Trail" />
-
-<SerginProblemPanel Problem="problem" />
-
-@if (user is not null)
-{
-    <MudCard>
-        <MudCardContent>
-            <MudText Typo="Typo.h5">@user.UserName</MudText>
-            <MudText Typo="Typo.body2">@user.Id</MudText>
-        </MudCardContent>
-        <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Warning"
-                       Disabled="deactivating" OnClick="DeactivateAsync">Deactivate</MudButton>
-        </MudCardActions>
-    </MudCard>
-
-    <UserAssignmentsPanel UserId="Id" />
-}
+<UserDetailView Id="Id" />
