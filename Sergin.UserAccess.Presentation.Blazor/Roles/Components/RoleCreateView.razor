@@ -10,7 +10,7 @@
             <PermissionSubheader>@PermissionLabels.Module(Modules, Localizer, module.Schema)</PermissionSubheader>
             @foreach (PermissionCatalogGroup group in module.Groups)
             {
-                <PermissionSubheader Class="pl-6">@group.Name</PermissionSubheader>
+                <PermissionSubheader Class="pl-6">@Localizer.Text(group.Title)</PermissionSubheader>
                 @foreach (PermissionDefinition definition in group.Permissions)
                 {
                     <MudSelectItem T="string" Value="@definition.Permission.Value">

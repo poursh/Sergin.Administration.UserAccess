@@ -1,5 +1,5 @@
 <SerginAggregateDetailView TitleText="RoleTexts.Singular" Trail="Trail" Problem="problem" Ready="@(role is not null)" Actions="Actions"
-                           FieldsTitle="@role?.Name">
+                           FieldsTitleData="@role?.Name">
     <HeaderActions>
         <SerginReloadButton OnReload="LoadAsync" />
         <SerginCopyLinkButton />
@@ -53,7 +53,7 @@
                         <PermissionSubheader>@PermissionLabels.Module(Modules, Localizer, module.Schema)</PermissionSubheader>
                         @foreach (PermissionCatalogGroup group in module.Groups)
                         {
-                            <PermissionSubheader Class="pl-6">@group.Name</PermissionSubheader>
+                            <PermissionSubheader Class="pl-6">@Localizer.Text(group.Title)</PermissionSubheader>
                             @foreach (PermissionDefinition definition in group.Permissions.Where(definition => !IsGranted(definition)))
                             {
                                 <MudSelectItem T="string" Value="@definition.Permission.Value">

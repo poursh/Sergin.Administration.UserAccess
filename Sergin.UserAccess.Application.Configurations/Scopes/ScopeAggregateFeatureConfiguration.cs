@@ -7,5 +7,6 @@ internal sealed class ScopeAggregateFeatureConfiguration : IAggregateFeatureConf
 {
     public void Configure(AggregateFeatureBuilder<Scope> builder) => builder.Audited().SoftDeletable().Versioned()
             .Permissions(ScopePermissions.Read, ScopePermissions.Manage)
-            .Texts(ScopeTexts.Category);
+            .Texts(ScopeTexts.Category)
+            .Named(ScopeTexts.Singular);
 }

@@ -1,9 +1,9 @@
 using FluentValidation;
-using Sergin.SharedKernel.Application.Localizations.Common;
 using Sergin.SharedKernel.Application.Localizations.Validation;
 using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Application.Validations;
 using Sergin.UserAccess.Application.Configurations.Roles;
+using Sergin.UserAccess.Application.Configurations.Scopes;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.Create;
 using Sergin.UserAccess.Domain.Roles;
 using Sergin.UserAccess.Domain.Scopes;
@@ -17,13 +17,8 @@ internal sealed class CreateRoleCommandValidator : AbstractValidator<CreateRoleC
         RuleFor(x => x.OwnerScopeId).NotEmpty();
 
         RuleFor(x => x.OwnerScopeId)
-            .MustAsync((_, id, context, cancellationToken) =>
-            {
-                // MustExistIn's declared text; MustExistIn itself takes a typed id, and the command carries a Guid.
-                context.MessageFormatter.AppendArgument(RepositoryRuleBuilderExtensions.AggregateTypeNamePlaceholder, nameof(Scope));
-                return scopes.ExistsAsync(new ScopeId(id), cancellationToken);
-            })
-            .WithMessage(_ => ValidationTexts.Template(CommonValidationTexts.MustExistIn))
+            // The command carries the scope id untyped, so the repository's ExistsAsync is called through a ScopeId.
+            .MustExistIn((id, cancellationToken) => scopes.ExistsAsync(new ScopeId(id), cancellationToken), ScopeTexts.Singular)
             .When(x => x.OwnerScopeId != Guid.Empty);
 
         RuleFor(x => x.Name.Value)

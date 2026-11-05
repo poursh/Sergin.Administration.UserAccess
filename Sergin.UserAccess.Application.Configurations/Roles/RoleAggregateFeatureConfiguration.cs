@@ -7,5 +7,6 @@ internal sealed class RoleAggregateFeatureConfiguration : IAggregateFeatureConfi
 {
     public void Configure(AggregateFeatureBuilder<Role> builder) => builder.Audited().SoftDeletable().Versioned()
             .Permissions(RolePermissions.Read, RolePermissions.Manage)
-            .Texts(RoleTexts.Category);
+            .Texts(RoleTexts.Category)
+            .Named(RoleTexts.Singular);
 }
