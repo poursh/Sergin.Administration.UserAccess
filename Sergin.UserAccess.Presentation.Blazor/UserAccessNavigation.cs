@@ -1,5 +1,6 @@
 ﻿using MudBlazor;
 using Sergin.SharedKernel.Modules;
+using Sergin.UserAccess.Application.Configurations;
 using Sergin.UserAccess.Application.Configurations.Scopes;
 using Sergin.UserAccess.Application.Configurations.Users;
 
@@ -12,12 +13,12 @@ namespace Sergin.UserAccess.Presentation.Blazor;
 public static class UserAccessNavigation
 {
     public static SerginNavGroup Group { get; } = new(
-        "User Access",
+        UserAccessTexts.MenuTitle,
         Icons.Material.Filled.AdminPanelSettings,
         Order: 200);
 
     public static SerginNavItem Users { get; } = new(
-        "Users",
+        UserTexts.Title,
         "/ua/users",
         Icons.Material.Filled.People,
         Order: 200,
@@ -25,7 +26,7 @@ public static class UserAccessNavigation
 
     // Shown to a regional administrator too: the tree page lists the subtrees their scopes.read grants reach.
     public static SerginNavItem Scopes { get; } = new(
-        "Scopes",
+        ScopeTexts.Title,
         "/ua/scopes",
         Icons.Material.Filled.AccountTree,
         Order: 210,

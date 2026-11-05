@@ -8,5 +8,6 @@ namespace Sergin.UserAccess.Application.Configurations.Roles.Commands.Rename;
 // record's own scope rather than the scope the caller is working in.
 internal sealed class RenameRoleCommandConfiguration : ICommandConfiguration<RenameRoleCommand, Role>
 {
-    public void Configure(CommandConfigurationBuilder<RenameRoleCommand> builder) => builder.RequireExpectedVersion();
+    public void Configure(CommandConfigurationBuilder<RenameRoleCommand> builder) =>
+        builder.RequireExpectedVersion().NotShown(command => command.Id);
 }

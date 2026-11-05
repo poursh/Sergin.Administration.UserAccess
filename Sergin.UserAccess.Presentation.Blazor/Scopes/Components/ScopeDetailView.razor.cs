@@ -58,6 +58,9 @@ public sealed partial class ScopeDetailView
     [Inject]
     private IDialogService DialogService { get; set; } = default!;
 
+    [Inject]
+    private IStringLocalizer Localizer { get; set; } = default!;
+
     [CascadingParameter]
     private SerginViewHost Host { get; set; } = SerginViewHost.Unhosted;
 
@@ -66,18 +69,18 @@ public sealed partial class ScopeDetailView
     private IReadOnlyList<SerginBreadcrumb> Trail =>
     [
         SerginBreadcrumb.Of(UserAccessNavigation.Scopes),
-        new(scope?.Name ?? "Scope"),
+        scope is null ? new(ScopeTexts.Singular) : SerginBreadcrumb.Data(scope.Name),
     ];
 
     // The root cannot be deleted; every other scope can, once it is a leaf (the handler refuses otherwise).
     private IReadOnlyList<SerginPageAction> Actions =>
     [
-        new("New child scope", Icons.Material.Outlined.Add, SerginActionKind.Secondary, Href: $"/ua/scopes/new?parentId={Id}",
+        new(ScopeTexts.NewChild, Icons.Material.Outlined.Add, SerginActionKind.Secondary, Href: $"/ua/scopes/new?parentId={Id}",
             Permission: ScopePermissions.Manage, AnyScope: true),
-        new("New role here", Icons.Material.Outlined.Badge, SerginActionKind.Secondary, Href: $"/ua/roles/new?scopeId={Id}"),
+        new(ScopeTexts.NewRoleHere, Icons.Material.Outlined.Badge, SerginActionKind.Secondary, Href: $"/ua/roles/new?scopeId={Id}"),
         .. scope?.ParentId is null
             ? Array.Empty<SerginPageAction>()
-            : [new("Delete", Icons.Material.Outlined.Delete, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeleteAsync),
+            : [new(CommonTexts.Delete, Icons.Material.Outlined.Delete, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeleteAsync),
                 Permission: ScopePermissions.Manage, AnyScope: true, Disabled: busy)],
     ];
 
@@ -176,8 +179,7 @@ public sealed partial class ScopeDetailView
 
     private async Task DeleteAsync()
     {
-        if (!await DialogService.ConfirmDeleteAsync(
-                "Delete scope", $"Delete {scope?.Name}? It disappears from the tree and every scope picker."))
+        if (!await DialogService.ConfirmDeleteAsync(Localizer, ScopeTexts.DeleteTitle, ScopeTexts.DeleteConfirm, new { scope?.Name }))
         {
             return;
         }

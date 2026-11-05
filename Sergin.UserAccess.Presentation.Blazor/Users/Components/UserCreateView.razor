@@ -1,4 +1,4 @@
-<SerginFormView Title="New user" Trail="Trail"
-                Model="model" Validation="validation" OnSubmit="OnSubmit" Submitting="submitting" SubmitLabel="Create" CancelHref="/ua/users">
-    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.UserName" Label="User name" For="@(() => model.UserName)" Immediate="true" />
+<SerginFormView TitleText="UserTexts.New" Trail="Trail"
+                Model="model" Validation="validation" OnSubmit="OnSubmit" Submitting="submitting" SubmitLabelText="CommonTexts.Create" CancelHref="/ua/users">
+    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.UserName" Label="@Localizer.Text(UserTexts.UserName.Label)" For="@(() => model.UserName)" Immediate="true" />
 </SerginFormView>

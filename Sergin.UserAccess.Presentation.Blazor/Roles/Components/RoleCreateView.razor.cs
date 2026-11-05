@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Domain.Securities;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
+using Sergin.SharedKernel.Presentation.Blazor.Modules;
+using Sergin.UserAccess.Application.Configurations.Roles;
+using Sergin.UserAccess.Application.Configurations.Scopes;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.Create;
 using Sergin.UserAccess.Domain.Roles;
 using Sergin.UserAccess.Presentation.Blazor.Roles.Models;
@@ -38,6 +41,10 @@ public sealed partial class RoleCreateView
     [Inject]
     private IStringLocalizer Localizer { get; set; } = default!;
 
+    // The modules this host shows, whose drawer group titles name the permission picker's module headings.
+    [Inject]
+    private SerginUiModuleCatalog Modules { get; set; } = default!;
+
     [CascadingParameter]
     private SerginViewHost Host { get; set; } = SerginViewHost.Unhosted;
 
@@ -47,8 +54,8 @@ public sealed partial class RoleCreateView
     private IReadOnlyList<SerginBreadcrumb> Trail =>
     [
         SerginBreadcrumb.Of(UserAccessNavigation.Scopes),
-        new("Scope", $"/ua/scopes/{ScopeId}"),
-        new("New role"),
+        new(ScopeTexts.Singular, $"/ua/scopes/{ScopeId}"),
+        new(RoleTexts.New),
     ];
 
     private string LabelOf(string? name) => name is null ? string.Empty : PermissionLabels.Of(Catalog, Localizer, name);

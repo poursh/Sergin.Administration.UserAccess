@@ -14,12 +14,15 @@ public sealed partial class UserListView
     // Users belong to no scope, so CreateUser passes a caller holding Manage on any scope.
     private IReadOnlyList<SerginPageAction> Actions { get; } =
     [
-        new("New user", Icons.Material.Filled.Add, SerginActionKind.Primary, Href: "/ua/users/new",
+        new(UserTexts.New, Icons.Material.Filled.Add, SerginActionKind.Primary, Href: "/ua/users/new",
             Permission: UserPermissions.Manage, AnyScope: true),
     ];
 
     [Inject]
     private ISerginDispatcher Dispatcher { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer Localizer { get; set; } = default!;
 
     private Task<ErrorOr<ListQueryResponse<GetUserListItem>>> LoadAsync(SerginListRequest request, CancellationToken cancellationToken) =>
         Dispatcher.SendAsync(new GetUserListQueryCommand(request.Paggination), cancellationToken);

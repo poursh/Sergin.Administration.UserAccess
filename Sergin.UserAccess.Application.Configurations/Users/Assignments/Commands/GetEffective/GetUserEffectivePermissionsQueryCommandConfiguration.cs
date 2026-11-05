@@ -7,5 +7,5 @@ namespace Sergin.UserAccess.Application.Configurations.Users.Assignments.Command
 internal sealed class GetUserEffectivePermissionsQueryCommandConfiguration : ICommandConfiguration<GetUserEffectivePermissionsQueryCommand, User>
 {
     public void Configure(CommandConfigurationBuilder<GetUserEffectivePermissionsQueryCommand> builder) =>
-        builder.RequirePermissions(UserPermissions.Read);
+        builder.RequirePermissions(UserPermissions.Read).Texts(AssignmentTexts.Category).NotShown(command => command.UserId);
 }

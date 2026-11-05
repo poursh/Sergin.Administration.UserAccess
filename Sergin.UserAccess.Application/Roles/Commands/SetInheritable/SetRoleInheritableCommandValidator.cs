@@ -1,4 +1,6 @@
 using FluentValidation;
+using Sergin.SharedKernel.Application.Localizations.Validation;
+using Sergin.UserAccess.Application.Configurations.Roles;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.SetInheritable;
 
 namespace Sergin.UserAccess.Application.Roles.Commands.SetInheritable;
@@ -13,7 +15,7 @@ internal sealed class SetRoleInheritableCommandValidator : AbstractValidator<Set
         RuleFor(x => x.IsInheritable)
             .MustAsync(async (command, _, cancellationToken) =>
                 !await roles.HasLiveAssignmentsAwayFromOwnerAsync(command.Id, cancellationToken))
-            .WithMessage("The role is assigned below its owner scope; revoke those assignments before making it non-inheritable.")
+            .WithMessage(_ => ValidationTexts.Template(RoleTexts.AssignedBelowOwner))
             .When(x => !x.IsInheritable && x.Id != Guid.Empty);
     }
 }

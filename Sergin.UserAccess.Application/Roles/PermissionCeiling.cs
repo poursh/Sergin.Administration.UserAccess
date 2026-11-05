@@ -1,4 +1,6 @@
+using Sergin.SharedKernel.Domain.Localizations;
 using Sergin.SharedKernel.Domain.Securities;
+using Sergin.UserAccess.Application.Configurations.Roles;
 
 namespace Sergin.UserAccess.Application.Roles;
 
@@ -11,5 +13,8 @@ internal static class PermissionCeiling
     public static Error Exceeded(Permission permission) =>
         Error.Validation(
             "Permissions",
-            $"You can only grant a permission you hold in the role's owner scope; you do not hold '{permission.Value}' there.");
+            $"You can only grant a permission you hold in the role's owner scope; you do not hold '{permission.Value}' there.",
+            ErrorText.Of(
+                RoleTexts.PermissionCeilingExceeded.Key.Value,
+                new Dictionary<string, object?>(StringComparer.Ordinal) { ["Permission"] = permission.Value }));
 }

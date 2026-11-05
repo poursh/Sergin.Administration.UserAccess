@@ -1,4 +1,5 @@
 ﻿using Sergin.SharedKernel.Domain;
+using Sergin.SharedKernel.Domain.Localizations;
 using Sergin.UserAccess.Domain.Roles;
 using Sergin.UserAccess.Domain.Scopes;
 using Sergin.UserAccess.Domain.Users.Assignments;
@@ -109,13 +110,15 @@ public class User : AggregateRoot<UserInternalId>
         if (!role.IsAssignableAt(ownerPath, scope.Path))
         {
             return Error.Validation(
-                "ScopeId", "The role can only be assigned at its owner scope, or below it when the role is inheritable.");
+                "ScopeId",
+                "The role can only be assigned at its owner scope, or below it when the role is inheritable.",
+                ErrorText.Of(UserErrorKeys.RoleNotAssignableHere));
         }
 
         if (assignments.Exists(existing => existing.RoleId == role.Id && existing.ScopeId == scope.Id && !existing.IsRevoked
             && (existing.ValidUntilUtc is null || nowUtc < existing.ValidUntilUtc)))
         {
-            return Error.Validation("RoleId", "The user already holds this role at this scope.");
+            return Error.Validation("RoleId", "The user already holds this role at this scope.", ErrorText.Of(UserErrorKeys.RoleAlreadyHeld));
         }
 
         var assignment = RoleAssignment.Create(role.Id, scope.Id, includeSubtree, period);

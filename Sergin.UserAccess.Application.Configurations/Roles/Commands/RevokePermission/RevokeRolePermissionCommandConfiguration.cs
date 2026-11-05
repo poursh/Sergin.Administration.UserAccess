@@ -8,5 +8,6 @@ namespace Sergin.UserAccess.Application.Configurations.Roles.Commands.RevokePerm
 // record's own scope rather than the scope the caller is working in.
 internal sealed class RevokeRolePermissionCommandConfiguration : ICommandConfiguration<RevokeRolePermissionCommand, Role>
 {
-    public void Configure(CommandConfigurationBuilder<RevokeRolePermissionCommand> builder) => builder.RequireExpectedVersion();
+    public void Configure(CommandConfigurationBuilder<RevokeRolePermissionCommand> builder) =>
+        builder.RequireExpectedVersion().NotShown(command => command.Id);
 }

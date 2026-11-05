@@ -1,5 +1,7 @@
 using FluentValidation;
+using Sergin.SharedKernel.Application.Localizations.Validation;
 using Sergin.SharedKernel.Application.Securities.Authorization;
+using Sergin.UserAccess.Application.Configurations.Roles;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.GrantPermission;
 
 namespace Sergin.UserAccess.Application.Roles.Commands.GrantPermission;
@@ -15,7 +17,7 @@ internal sealed class GrantRolePermissionCommandValidator : AbstractValidator<Gr
         // has no such rule, so a name a release dropped can still be taken off a role.
         RuleFor(x => x.Permission)
             .Must(permission => catalog.TryGet(permission, out _))
-            .WithMessage("'{PropertyName}' must be a permission the platform defines.")
+            .WithMessage(_ => ValidationTexts.Template(RoleTexts.UnknownPermission))
             .When(x => x.Permission is not null);
     }
 }

@@ -8,5 +8,6 @@ namespace Sergin.UserAccess.Application.Configurations.Roles.Commands.GrantPermi
 // record's own scope rather than the scope the caller is working in.
 internal sealed class GrantRolePermissionCommandConfiguration : ICommandConfiguration<GrantRolePermissionCommand, Role>
 {
-    public void Configure(CommandConfigurationBuilder<GrantRolePermissionCommand> builder) => builder.RequireExpectedVersion();
+    public void Configure(CommandConfigurationBuilder<GrantRolePermissionCommand> builder) =>
+        builder.RequireExpectedVersion().NotShown(command => command.Id);
 }

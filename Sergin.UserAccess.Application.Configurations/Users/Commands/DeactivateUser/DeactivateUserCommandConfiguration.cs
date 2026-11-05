@@ -7,5 +7,5 @@ namespace Sergin.UserAccess.Application.Configurations.Users.Commands.Deactivate
 internal sealed class DeactivateUserCommandConfiguration : ICommandConfiguration<DeactivateUserCommand, User>
 {
     public void Configure(CommandConfigurationBuilder<DeactivateUserCommand> builder) =>
-        builder.RequirePermissions(UserPermissions.Manage);
+        builder.RequirePermissions(UserPermissions.Manage).Texts(UserTexts.Category).NotShown(command => command.Id);
 }

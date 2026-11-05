@@ -1,4 +1,6 @@
 using FluentValidation;
+using Sergin.SharedKernel.Application.Localizations.Validation;
+using Sergin.UserAccess.Application.Configurations.Roles;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.Rename;
 using Sergin.UserAccess.Domain.Roles;
 
@@ -18,7 +20,7 @@ internal sealed class RenameRoleCommandValidator : AbstractValidator<RenameRoleC
         RuleFor(x => x.Name)
             .MustAsync(async (command, name, cancellationToken) =>
                 !await roles.IsNameTakenInLineOfRoleAsync(command.Id, name.Value, cancellationToken))
-            .WithMessage("'Name' is already used by a role in this scope, one above it or one below it.")
+            .WithMessage(_ => ValidationTexts.Template(RoleTexts.NameTakenInLine))
             .When(x => x.Id != Guid.Empty && !string.IsNullOrWhiteSpace(x.Name.Value));
     }
 }

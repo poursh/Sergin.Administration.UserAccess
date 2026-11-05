@@ -1,4 +1,5 @@
 using Sergin.SharedKernel.Domain;
+using Sergin.SharedKernel.Domain.Localizations;
 using Sergin.UserAccess.Domain.Roles;
 using Sergin.UserAccess.Domain.Scopes;
 
@@ -76,7 +77,10 @@ public sealed record ValidityPeriod
     {
         if (fromUtc is not null && untilUtc is not null && untilUtc <= fromUtc)
         {
-            return Error.Validation("ValidUntilUtc", "'Valid Until Utc' must be after 'Valid From Utc'.");
+            return Error.Validation(
+                "ValidUntilUtc",
+                "'Valid until' must be after 'Valid from'.",
+                ErrorText.Of(RoleAssignmentErrorKeys.ValidUntilNotAfterValidFrom));
         }
 
         return new ValidityPeriod(AsUtc(fromUtc), AsUtc(untilUtc));

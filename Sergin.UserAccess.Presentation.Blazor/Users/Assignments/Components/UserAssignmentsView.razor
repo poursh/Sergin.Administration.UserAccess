@@ -1,18 +1,18 @@
 @* Two embedded sections of the user detail view: the assignments with the assign form, and what they add up to. *@
-<SerginEntityListView Title="Assignments" Count="assignments.Count">
+<SerginEntityListView TitleText="AssignmentTexts.Title" Count="assignments.Count">
     @if (assignments.Count == 0)
     {
-        <MudText Typo="Typo.body2" Class="mb-2">No assignments yet.</MudText>
+        <MudText Typo="Typo.body2" Class="mb-2">@Localizer.Text(AssignmentTexts.Empty)</MudText>
     }
     else
     {
         <MudSimpleTable Hover="true" Dense="true">
             <thead>
                 <tr>
-                    <th>Role</th>
-                    <th>Scope</th>
-                    <th>Covers</th>
-                    <th>Valid</th>
+                    <th>@Localizer.Text(AssignmentTexts.RoleId.Label)</th>
+                    <th>@Localizer.Text(AssignmentTexts.ScopeId.Label)</th>
+                    <th>@Localizer.Text(AssignmentTexts.Covers)</th>
+                    <th>@Localizer.Text(AssignmentTexts.Valid)</th>
                     <th></th>
                 </tr>
             </thead>
@@ -22,17 +22,17 @@
                     <tr>
                         <td><MudLink Href="@($"/ua/roles/{assignment.RoleId}")">@assignment.RoleName</MudLink></td>
                         <td><MudLink Href="@($"/ua/scopes/{assignment.ScopeId}")">@assignment.ScopeName</MudLink></td>
-                        <td>@(assignment.IncludeSubtree ? "Scope and below" : "This scope only")</td>
+                        <td>@Covers(assignment.IncludeSubtree)</td>
                         <td>@Period(assignment)</td>
                         <td>
                             @if (assignment.RevokedAtUtc is null)
                             {
                                 <MudButton Size="Size.Small" Color="Color.Error" Disabled="busy"
-                                           OnClick="@(() => RevokeAsync(assignment.Id))">Revoke</MudButton>
+                                           OnClick="@(() => RevokeAsync(assignment.Id))">@Localizer.Text(AssignmentTexts.Revoke)</MudButton>
                             }
                             else
                             {
-                                <MudText Typo="Typo.caption">Revoked</MudText>
+                                <MudText Typo="Typo.caption">@Localizer.Text(AssignmentTexts.Revoked)</MudText>
                             }
                         </td>
                     </tr>
@@ -43,43 +43,45 @@
 
     <MudCard Outlined="true" Class="mt-4">
         <MudCardContent>
-            <MudText Typo="Typo.subtitle1">Assign a role</MudText>
-            <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="Guid" Value="model.ScopeId" ValueChanged="OnScopeChangedAsync" Label="Scope">
+            <MudText Typo="Typo.subtitle1">@Localizer.Text(AssignmentTexts.AssignTitle)</MudText>
+            <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="Guid" Value="model.ScopeId" ValueChanged="OnScopeChangedAsync" Label="@Localizer.Text(AssignmentTexts.ScopeId.Label)">
                 @foreach (ScopeTreeItem scope in scopes)
                 {
                     <MudSelectItem T="Guid" Value="@scope.Id">@scope.Name</MudSelectItem>
                 }
             </MudSelect>
-            <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="Guid" @bind-Value="model.RoleId" Label="Role" Disabled="@(model.ScopeId == Guid.Empty)">
+            <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="Guid" @bind-Value="model.RoleId" Label="@Localizer.Text(AssignmentTexts.RoleId.Label)" Disabled="@(model.ScopeId == Guid.Empty)">
                 @foreach (AssignableRoleItem role in roles)
                 {
-                    <MudSelectItem T="Guid" Value="@role.Id">@role.Name (@role.OwnerScopeName)</MudSelectItem>
+                    <MudSelectItem T="Guid" Value="@role.Id">@RoleOption(role)</MudSelectItem>
                 }
             </MudSelect>
-            <MudSwitch T="bool" @bind-Value="model.IncludeSubtree" Color="Color.Primary" Label="Also every scope below" />
-            <MudDatePicker Culture="@Formatter.Culture" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="model.ValidFromUtc" Label="Valid from (optional)" Clearable="true" />
-            <MudDatePicker Culture="@Formatter.Culture" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="model.ValidUntilUtc" Label="Valid until (optional)" Clearable="true" />
+            <MudSwitch T="bool" @bind-Value="model.IncludeSubtree" Color="Color.Primary" Label="@Localizer.Text(AssignmentTexts.IncludeSubtree.Label)" />
+            <MudDatePicker Culture="@Formatter.Culture" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="model.ValidFromUtc"
+                           Label="@Localizer.Text(AssignmentTexts.ValidFromUtc.Label)" HelperText="@OptionalHint" Clearable="true" />
+            <MudDatePicker Culture="@Formatter.Culture" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="model.ValidUntilUtc"
+                           Label="@Localizer.Text(AssignmentTexts.ValidUntilUtc.Label)" HelperText="@OptionalHint" Clearable="true" />
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                       Disabled="@(busy || model.RoleId == Guid.Empty)" OnClick="AssignAsync">Assign</MudButton>
+                       Disabled="@(busy || model.RoleId == Guid.Empty)" OnClick="AssignAsync">@Localizer.Text(AssignmentTexts.Assign)</MudButton>
         </MudCardActions>
     </MudCard>
 </SerginEntityListView>
 
-<SerginEntityListView Title="Effective permissions" Count="effective.Count">
+<SerginEntityListView TitleText="AssignmentTexts.EffectiveTitle" Count="effective.Count">
     @if (effective.Count == 0)
     {
-        <MudText Typo="Typo.body2">No permissions held.</MudText>
+        <MudText Typo="Typo.body2">@Localizer.Text(AssignmentTexts.NoPermissions)</MudText>
     }
     else
     {
         <MudSimpleTable Dense="true">
             <thead>
                 <tr>
-                    <th>Scope</th>
-                    <th>Covers</th>
-                    <th>Permissions</th>
+                    <th>@Localizer.Text(AssignmentTexts.ScopeId.Label)</th>
+                    <th>@Localizer.Text(AssignmentTexts.Covers)</th>
+                    <th>@Localizer.Text(AssignmentTexts.Permissions)</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,8 +89,8 @@
                 {
                     <tr>
                         <td>@item.ScopeName</td>
-                        <td>@(item.IncludeSubtree ? "Scope and below" : "This scope only")</td>
-                        <td>@string.Join(", ", item.Permissions)</td>
+                        <td>@Covers(item.IncludeSubtree)</td>
+                        <td>@PermissionsOf(item)</td>
                     </tr>
                 }
             </tbody>

@@ -1,4 +1,6 @@
 using FluentValidation;
+using Sergin.SharedKernel.Application.Localizations.Common;
+using Sergin.SharedKernel.Application.Localizations.Validation;
 using Sergin.UserAccess.Application.Contracts.Scopes.Commands.Create;
 using Sergin.UserAccess.Domain.Scopes;
 
@@ -19,7 +21,7 @@ internal sealed class CreateScopeCommandValidator : AbstractValidator<CreateScop
         RuleFor(x => x.Name)
             .MustAsync((command, name, cancellationToken) =>
                 NotTakenAsync(scopes, command.ParentId, name.Value, cancellationToken))
-            .WithMessage("'Name' is already in use.")
+            .WithMessage(_ => ValidationTexts.Template(CommonValidationTexts.MustBeUniqueIn))
             .When(x => x.ParentId != Guid.Empty && !string.IsNullOrWhiteSpace(x.Name.Value));
     }
 

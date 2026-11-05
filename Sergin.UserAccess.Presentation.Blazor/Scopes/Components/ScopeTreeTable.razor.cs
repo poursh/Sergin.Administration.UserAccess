@@ -1,5 +1,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
+using Sergin.SharedKernel.Presentation.Localizations;
+using Sergin.UserAccess.Application.Configurations.Scopes;
 using Sergin.UserAccess.Application.Contracts.Scopes.Commands.GetTree;
 
 namespace Sergin.UserAccess.Presentation.Blazor.Scopes.Components;
@@ -21,8 +23,15 @@ public sealed partial class ScopeTreeTable
     [Parameter]
     public Guid? UnderId { get; set; }
 
+    /// <summary>What shows when there is no scope to list.</summary>
     [Parameter]
-    public string EmptyText { get; set; } = "No scopes.";
+    public TextDefinition EmptyMessage { get; set; } = ScopeTexts.NoScopes;
+
+    [Inject]
+    private IStringLocalizer Localizer { get; set; } = default!;
+
+    [Inject]
+    private ICultureFormatter Formatter { get; set; } = default!;
 
     protected override void OnParametersSet()
     {

@@ -1,4 +1,4 @@
-<SerginFormView Title="New scope" Trail="Trail" Model="model" Validation="validation" OnSubmit="OnSubmit"
-                Submitting="submitting" SubmitLabel="Create" CancelHref="@($"/ua/scopes/{ParentId}")">
-    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.Name" Label="Name" For="@(() => model.Name)" Immediate="true" />
+<SerginFormView TitleText="ScopeTexts.New" Trail="Trail" Model="model" Validation="validation" OnSubmit="OnSubmit"
+                Submitting="submitting" SubmitLabelText="CommonTexts.Create" CancelHref="@($"/ua/scopes/{ParentId}")">
+    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.Name" Label="@Localizer.Text(ScopeTexts.Name.Label)" For="@(() => model.Name)" Immediate="true" />
 </SerginFormView>

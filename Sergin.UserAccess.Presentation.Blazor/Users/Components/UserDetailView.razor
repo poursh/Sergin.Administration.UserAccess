@@ -1,4 +1,4 @@
-<SerginAggregateDetailView Title="User" Trail="Trail" Problem="problem" Ready="@(user is not null)" Actions="Actions"
+<SerginAggregateDetailView TitleText="UserTexts.Singular" Trail="Trail" Problem="problem" Ready="@(user is not null)" Actions="Actions"
                            FieldsTitle="@user?.UserName">
     <HeaderActions>
         <SerginReloadButton OnReload="ReloadAsync" />
@@ -7,8 +7,8 @@
     <Fields>
         @if (user is not null)
         {
-            <SerginDetailField Label="User name" Value="@user.UserName" />
-            <SerginDetailField Label="Id" Value="@user.Id.ToString()" />
+            <SerginDetailField LabelText="UserTexts.UserName.Label" Value="@user.UserName" />
+            <SerginDetailField LabelText="UserTexts.Identifier" Value="@user.Id.ToString()" />
         }
     </Fields>
     <Entities>
