@@ -1,4 +1,3 @@
-using Sergin.SharedKernel.Application.Localizations;
 using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Domain.Securities;
 
@@ -8,11 +7,11 @@ namespace Sergin.UserAccess.Presentation.Blazor.Roles;
 internal static class PermissionLabels
 {
     /// <summary>The module's localized name, or its schema when no resource exists.</summary>
-    public static string Module(ILocalizer localizer, string schema) =>
-        localizer.LocalizedOrDefault($"Permissions.{schema}", schema);
+    public static string Module(IStringLocalizer localizer, string schema) =>
+        localizer[$"Permissions.{schema}"] is { ResourceNotFound: false } text ? text.Value : schema;
 
     /// <summary>The permission's localized label, or its raw name when the catalogue does not define it.</summary>
-    public static string Of(PermissionCatalog catalog, ILocalizer localizer, string name) =>
+    public static string Of(PermissionCatalog catalog, IStringLocalizer localizer, string name) =>
         Permission.TryCreate(name, out Permission? permission) && catalog.TryGet(permission, out PermissionDefinition? definition)
             ? localizer[definition.Label].Value
             : name;

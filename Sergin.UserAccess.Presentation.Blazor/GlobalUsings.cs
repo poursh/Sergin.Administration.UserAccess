@@ -12,3 +12,4 @@ global using Sergin.UserAccess.Application.Contracts.Users.Commands.DeactivateUs
 global using Sergin.UserAccess.Application.Contracts.Users.Commands.GetList;
 global using Sergin.UserAccess.Application.Contracts.Users.Commands.GetOne;
 global using Sergin.UserAccess.Application.Contracts.Users.Commands.ProvisionExternalUser;
+global using Microsoft.Extensions.Localization;
