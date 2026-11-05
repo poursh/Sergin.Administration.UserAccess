@@ -18,6 +18,8 @@ namespace Sergin.UserAccess;
 
 public sealed class UserAccessModule : ISerginWebApiModule, ISerginWebUiModule
 {
+    public string Name => "UserAccess";
+
     public string Schema => UserAccessDbContext.Schema;
 
     public Assembly ApplicationAssembly => UserAccessApplicationAssemblyReference.Assembly;
