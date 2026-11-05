@@ -57,8 +57,8 @@
                 }
             </MudSelect>
             <MudSwitch T="bool" @bind-Value="model.IncludeSubtree" Color="Color.Primary" Label="Also every scope below" />
-            <MudDatePicker Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="model.ValidFromUtc" Label="Valid from (optional)" Clearable="true" />
-            <MudDatePicker Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="model.ValidUntilUtc" Label="Valid until (optional)" Clearable="true" />
+            <MudDatePicker Culture="@Formatter.Culture" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="model.ValidFromUtc" Label="Valid from (optional)" Clearable="true" />
+            <MudDatePicker Culture="@Formatter.Culture" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="model.ValidUntilUtc" Label="Valid until (optional)" Clearable="true" />
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary"

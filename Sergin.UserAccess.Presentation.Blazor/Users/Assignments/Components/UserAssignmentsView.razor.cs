@@ -1,6 +1,6 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
+using Sergin.SharedKernel.Presentation.Localizations;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.GetAssignable;
 using Sergin.UserAccess.Application.Contracts.Scopes.Commands.GetTree;
 using Sergin.UserAccess.Application.Contracts.Users.Assignments.Commands.Assign;
@@ -30,6 +30,9 @@ public sealed partial class UserAssignmentsView
 
     [Inject]
     private ISerginDispatcher Dispatcher { get; set; } = default!;
+
+    [Inject]
+    private ICultureFormatter Formatter { get; set; } = default!;
 
     [Inject]
     private IUiErrorPresenter ErrorPresenter { get; set; } = default!;
@@ -120,11 +123,13 @@ public sealed partial class UserAssignmentsView
     // A picked calendar day is that day's UTC midnight.
     private static DateTime? AsUtc(DateTime? day) => day is { } value ? DateTime.SpecifyKind(value.Date, DateTimeKind.Utc) : null;
 
-    private static string Period(UserAssignmentItem assignment) => (assignment.ValidFromUtc, assignment.ValidUntilUtc) switch
+    private string Period(UserAssignmentItem assignment) => (assignment.ValidFromUtc, assignment.ValidUntilUtc) switch
     {
         (null, null) => "Always",
-        ({ } from, null) => string.Create(CultureInfo.CurrentCulture, $"From {from:d}"),
-        (null, { } until) => string.Create(CultureInfo.CurrentCulture, $"Until {until:d}"),
-        ({ } from, { } until) => string.Create(CultureInfo.CurrentCulture, $"{from:d} to {until:d}"),
+        ({ } from, null) => $"From {Day(from)}",
+        (null, { } until) => $"Until {Day(until)}",
+        ({ } from, { } until) => $"{Day(from)} to {Day(until)}",
     };
+
+    private string Day(DateTime utc) => Formatter.Date(new DateTimeOffset(DateTime.SpecifyKind(utc, DateTimeKind.Utc)));
 }
