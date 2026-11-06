@@ -1,0 +1,17 @@
+global using ErrorOr;
+global using MediatR;
+global using Sergin.SharedKernel.Application;
+global using Sergin.SharedKernel.Application.Commands.Queries;
+global using Sergin.SharedKernel.Application.Localizations;
+global using Sergin.SharedKernel.Application.Localizations.Common;
+global using Sergin.SharedKernel.Presentation.Blazor.Dispatching;
+global using Sergin.SharedKernel.Presentation.Blazor.Navigation;
+global using Sergin.SharedKernel.Presentation.Blazor.Pages;
+global using Sergin.SharedKernel.Presentation.Blazor.Views;
+global using Sergin.SharedKernel.Presentation.Blazor.Validation;
+global using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.Create;
+global using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.DeactivateUser;
+global using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.GetList;
+global using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.GetOne;
+global using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.ProvisionExternalUser;
+global using Microsoft.Extensions.Localization;
