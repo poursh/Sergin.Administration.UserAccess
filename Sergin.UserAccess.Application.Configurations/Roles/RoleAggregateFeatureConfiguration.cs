@@ -6,5 +6,7 @@ namespace Sergin.UserAccess.Application.Configurations.Roles;
 internal sealed class RoleAggregateFeatureConfiguration : IAggregateFeatureConfiguration<Role>
 {
     public void Configure(AggregateFeatureBuilder<Role> builder) => builder.Audited().SoftDeletable().Versioned()
-            .Permissions(RolePermissions.Read, RolePermissions.Manage);
+            .Permissions(RolePermissions.Read, RolePermissions.Manage)
+            .Texts(RoleTexts.Category)
+            .Named(RoleTexts.Singular);
 }

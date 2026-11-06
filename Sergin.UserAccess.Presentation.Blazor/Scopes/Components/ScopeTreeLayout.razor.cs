@@ -30,7 +30,7 @@ public sealed partial class ScopeTreeLayout
         scope.ParentId is null ? Icons.Material.Outlined.AccountTree : Icons.Material.Outlined.FolderOpen;
 
     private static SerginPageAction AddChildOf(ScopeTreeItem scope) =>
-        new("Sub-scope", Icons.Material.Outlined.Add, SerginActionKind.Secondary, Href: $"/ua/scopes/new?parentId={scope.Id}",
+        new(ScopeTexts.SubScope, Icons.Material.Outlined.Add, SerginActionKind.Secondary, Href: $"/ua/scopes/new?parentId={scope.Id}",
             Permission: ScopePermissions.Manage, AnyScope: true);
 
     private Task<ErrorOr<IReadOnlyCollection<ScopeTreeItem>>> LoadAsync() => Dispatcher.SendAsync(new GetScopeTreeQueryCommand());

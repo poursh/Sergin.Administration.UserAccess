@@ -1,5 +1,5 @@
-<SerginAggregateDetailView Title="Scope" Trail="Trail" Problem="problem" Ready="@(scope is not null)" Actions="Actions"
-                           FieldsTitle="@scope?.Name">
+<SerginAggregateDetailView TitleText="ScopeTexts.Singular" Trail="Trail" Problem="problem" Ready="@(scope is not null)" Actions="Actions"
+                           FieldsTitleData="@scope?.Name">
     <HeaderActions>
         <SerginReloadButton OnReload="LoadAsync" />
         <SerginCopyLinkButton />
@@ -7,16 +7,16 @@
     <Fields>
         @if (scope is not null)
         {
-            <SerginDetailField Label="Name" Value="@scope.Name" />
+            <SerginDetailField LabelText="ScopeTexts.Name.Label" Value="@scope.Name" />
             @if (scope.ParentId is { } parentId)
             {
-                <SerginDetailField Label="Under">
+                <SerginDetailField LabelText="ScopeTexts.Under">
                     <MudLink Href="@($"/ua/scopes/{parentId}")">@scope.ParentName</MudLink>
                 </SerginDetailField>
             }
             else
             {
-                <SerginDetailField Label="Under" Value="The root of the tree" />
+                <SerginDetailField LabelText="ScopeTexts.Under" Value="@Localizer.Text(ScopeTexts.TreeRoot)" />
             }
         }
     </Fields>
@@ -27,11 +27,11 @@
                      SuppressImplicitSubmission="false" onsubmit="@OnRename">
                 <MudCard Outlined="true" Class="mb-4">
                     <MudCardContent>
-                        <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.Name" Label="Name" For="@(() => model.Name)" Immediate="true" />
+                        <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.Name" Label="@Localizer.Text(ScopeTexts.Name.Label)" For="@(() => model.Name)" Immediate="true" />
                     </MudCardContent>
                     <MudCardActions>
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
-                                   Color="Color.Primary" Disabled="@(busy || !isValid)">Rename</MudButton>
+                                   Color="Color.Primary" Disabled="@(busy || !isValid)">@Localizer.Text(CommonTexts.Rename)</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudForm>
@@ -40,31 +40,31 @@
             {
                 <MudCard Outlined="true" Class="mb-4">
                     <MudCardContent>
-                        <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="Guid" @bind-Value="newParentId" Label="Move under">
+                        <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="Guid" @bind-Value="newParentId" Label="@Localizer.Text(ScopeTexts.NewParentId.Label)">
                             @foreach (ScopeTreeItem candidate in moveTargets)
                             {
                                 <MudSelectItem T="Guid" Value="@candidate.Id">@candidate.Name</MudSelectItem>
                             }
                         </MudSelect>
-                        <MudCheckBox T="bool" @bind-Value="cascade" Label="When deleting, also revoke its assignments and delete the roles it owns" />
+                        <MudCheckBox T="bool" @bind-Value="cascade" Label="@Localizer.Text(ScopeTexts.Cascade.Label)" />
                     </MudCardContent>
                     <MudCardActions>
                         <MudButton Variant="Variant.Outlined" Color="Color.Primary"
-                                   Disabled="@(busy || newParentId == Guid.Empty)" OnClick="MoveAsync">Move</MudButton>
+                                   Disabled="@(busy || newParentId == Guid.Empty)" OnClick="MoveAsync">@Localizer.Text(ScopeTexts.Move)</MudButton>
                     </MudCardActions>
                 </MudCard>
             }
 
-            <MudText Typo="Typo.h6" Class="mt-6 mb-2">Child scopes</MudText>
-            <ScopeTreeTable Scopes="tree" UnderId="Id" EmptyText="No child scopes." />
+            <MudText Typo="Typo.h6" Class="mt-6 mb-2">@Localizer.Text(ScopeTexts.ChildScopes)</MudText>
+            <ScopeTreeTable Scopes="tree" UnderId="Id" EmptyMessage="ScopeTexts.NoChildScopes" />
 
-            <MudText Typo="Typo.h6" Class="mt-6 mb-2">Roles usable here</MudText>
+            <MudText Typo="Typo.h6" Class="mt-6 mb-2">@Localizer.Text(ScopeTexts.RolesUsableHere)</MudText>
             <MudSimpleTable Hover="true" Dense="true">
                 <thead>
                     <tr>
-                        <th>Role</th>
-                        <th>Owned by</th>
-                        <th>Inheritable</th>
+                        <th>@Localizer.Text(ScopeTexts.Role)</th>
+                        <th>@Localizer.Text(ScopeTexts.OwnedBy)</th>
+                        <th>@Localizer.Text(ScopeTexts.Inheritable)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@
                         <tr>
                             <td><MudLink Href="@($"/ua/roles/{role.Id}")">@role.Name</MudLink></td>
                             <td>@role.OwnerScopeName</td>
-                            <td>@(role.IsInheritable ? "Yes" : "No")</td>
+                            <td>@Localizer.Text(role.IsInheritable ? ScopeTexts.Yes : ScopeTexts.No)</td>
                         </tr>
                     }
                 </tbody>

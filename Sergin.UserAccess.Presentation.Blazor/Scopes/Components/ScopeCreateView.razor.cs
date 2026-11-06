@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
+using Sergin.UserAccess.Application.Configurations.Scopes;
 using Sergin.UserAccess.Application.Contracts.Scopes.Commands.Create;
 using Sergin.UserAccess.Domain.Scopes;
 using Sergin.UserAccess.Presentation.Blazor.Scopes.Models;
@@ -28,6 +29,9 @@ public sealed partial class ScopeCreateView
     [Inject]
     private IUiErrorPresenter ErrorPresenter { get; set; } = default!;
 
+    [Inject]
+    private IStringLocalizer Localizer { get; set; } = default!;
+
     [CascadingParameter]
     private SerginViewHost Host { get; set; } = SerginViewHost.Unhosted;
 
@@ -37,7 +41,7 @@ public sealed partial class ScopeCreateView
     private IReadOnlyList<SerginBreadcrumb> Trail { get; } =
     [
         SerginBreadcrumb.Of(UserAccessNavigation.Scopes),
-        new("New scope"),
+        new(ScopeTexts.New),
     ];
 
     protected override void OnInitialized() => validation = FormValidator.RulesFor(ToCommand);

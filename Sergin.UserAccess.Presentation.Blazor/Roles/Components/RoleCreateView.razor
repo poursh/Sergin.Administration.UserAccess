@@ -1,20 +1,20 @@
-<SerginFormView Title="New role" Trail="Trail"
-                Model="model" Validation="validation" OnSubmit="OnSubmit" Submitting="submitting" SubmitLabel="Create" CancelHref="@($"/ua/scopes/{ScopeId}")">
-    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.Name" Label="Code" For="@(() => model.Name)" Immediate="true" />
+<SerginFormView TitleText="RoleTexts.New" Trail="Trail"
+                Model="model" Validation="validation" OnSubmit="OnSubmit" Submitting="submitting" SubmitLabelText="CommonTexts.Create" CancelHref="@($"/ua/scopes/{ScopeId}")">
+    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.Name" Label="@Localizer.Text(RoleTexts.Name.Label)" For="@(() => model.Name)" Immediate="true" />
     <MudSwitch T="bool" @bind-Value="model.IsInheritable" Color="Color.Primary"
-               Label="Inheritable: scopes below this one can use it too" />
-    <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" MultiSelection="true" ToStringFunc="@LabelOf" MultiSelectionTextFunc="@SelectedText" @bind-SelectedValues="model.Permissions" Label="Permissions"
+               Label="@Localizer.Text(RoleTexts.InheritableOnCreate)" />
+    <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" MultiSelection="true" ToStringFunc="@LabelOf" MultiSelectionTextFunc="@SelectedText" @bind-SelectedValues="model.Permissions" Label="@Localizer.Text(RoleTexts.Permissions.Label)"
                For="@(() => model.Name)">
         @foreach (PermissionCatalogModule module in Catalog.Grouped())
         {
-            <PermissionSubheader>@PermissionLabels.Module(Localizer, module.Schema)</PermissionSubheader>
+            <PermissionSubheader>@PermissionLabels.Module(Modules, Localizer, module.Schema)</PermissionSubheader>
             @foreach (PermissionCatalogGroup group in module.Groups)
             {
-                <PermissionSubheader Class="pl-6">@group.Name</PermissionSubheader>
+                <PermissionSubheader Class="pl-6">@Localizer.Text(group.Title)</PermissionSubheader>
                 @foreach (PermissionDefinition definition in group.Permissions)
                 {
                     <MudSelectItem T="string" Value="@definition.Permission.Value">
-                        @Localizer[definition.Label].Value <MudText Typo="Typo.caption">@definition.Permission.Value</MudText>
+                        @PermissionLabels.Of(Catalog, Localizer, definition) <MudText Typo="Typo.caption">@definition.Permission.Value</MudText>
                     </MudSelectItem>
                 }
             }

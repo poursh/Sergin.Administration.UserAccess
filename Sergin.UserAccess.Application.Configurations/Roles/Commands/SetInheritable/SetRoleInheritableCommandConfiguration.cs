@@ -8,5 +8,6 @@ namespace Sergin.UserAccess.Application.Configurations.Roles.Commands.SetInherit
 // record's own scope rather than the scope the caller is working in.
 internal sealed class SetRoleInheritableCommandConfiguration : ICommandConfiguration<SetRoleInheritableCommand, Role>
 {
-    public void Configure(CommandConfigurationBuilder<SetRoleInheritableCommand> builder) => builder.RequireExpectedVersion();
+    public void Configure(CommandConfigurationBuilder<SetRoleInheritableCommand> builder) =>
+        builder.RequireExpectedVersion().NotShown(command => command.Id);
 }

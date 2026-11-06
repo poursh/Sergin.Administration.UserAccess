@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Sergin.SharedKernel.Application.Concurrency;
-using Sergin.SharedKernel.Application.Localizations;
 using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Domain;
 using Sergin.SharedKernel.Domain.Securities;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
+using Sergin.SharedKernel.Presentation.Blazor.Modules;
 using Sergin.SharedKernel.Presentation.Errors;
 using Sergin.UserAccess.Application.Configurations.Roles;
+using Sergin.UserAccess.Application.Configurations.Scopes;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.Delete;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.GetOne;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.GrantPermission;
@@ -61,7 +62,11 @@ public sealed partial class RoleDetailView
     private PermissionCatalog Catalog { get; set; } = default!;
 
     [Inject]
-    private ILocalizer Localizer { get; set; } = default!;
+    private IStringLocalizer Localizer { get; set; } = default!;
+
+    // The modules this host shows, whose drawer group titles name the permission picker's module headings.
+    [Inject]
+    private SerginUiModuleCatalog Modules { get; set; } = default!;
 
     [CascadingParameter]
     private SerginViewHost Host { get; set; } = SerginViewHost.Unhosted;
@@ -71,13 +76,13 @@ public sealed partial class RoleDetailView
     private IReadOnlyList<SerginBreadcrumb> Trail =>
     [
         SerginBreadcrumb.Of(UserAccessNavigation.Scopes),
-        new(role?.OwnerScopeName ?? "Scope", role is null ? null : $"/ua/scopes/{role.OwnerScopeId}"),
-        new(role?.Name ?? "Role"),
+        role is null ? new(ScopeTexts.Singular) : SerginBreadcrumb.Data(role.OwnerScopeName, $"/ua/scopes/{role.OwnerScopeId}"),
+        role is null ? new(RoleTexts.Singular) : SerginBreadcrumb.Data(role.Name),
     ];
 
     private IReadOnlyList<SerginPageAction> Actions =>
     [
-        new("Delete", Icons.Material.Outlined.Delete, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeleteAsync),
+        new(CommonTexts.Delete, Icons.Material.Outlined.Delete, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeleteAsync),
             Permission: RolePermissions.Manage, AnyScope: true, Disabled: busy),
     ];
 
@@ -171,11 +176,8 @@ public sealed partial class RoleDetailView
             return;
         }
 
-        string message = cascade
-            ? $"Delete {role.Name} and revoke every assignment of it?"
-            : $"Delete {role.Name}? It can no longer be assigned.";
-
-        if (!await DialogService.ConfirmDeleteAsync("Delete role", message))
+        if (!await DialogService.ConfirmDeleteAsync(
+                Localizer, RoleTexts.DeleteTitle, cascade ? RoleTexts.DeleteCascadeConfirm : RoleTexts.DeleteConfirm, new { role.Name }))
         {
             return;
         }

@@ -7,5 +7,5 @@ namespace Sergin.UserAccess.Application.Configurations.Users.Commands.GetList;
 internal sealed class GetUserListQueryCommandConfiguration : ICommandConfiguration<GetUserListQueryCommand, User>
 {
     public void Configure(CommandConfigurationBuilder<GetUserListQueryCommand> builder) =>
-        builder.RequirePermissions(UserPermissions.Read);
+        builder.RequirePermissions(UserPermissions.Read).Texts(UserTexts.Category);
 }

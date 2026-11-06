@@ -8,5 +8,6 @@ namespace Sergin.UserAccess.Application.Configurations.Roles.Commands.Delete;
 // record's own scope rather than the scope the caller is working in.
 internal sealed class DeleteRoleCommandConfiguration : ICommandConfiguration<DeleteRoleCommand, Role>
 {
-    public void Configure(CommandConfigurationBuilder<DeleteRoleCommand> builder) => builder.RequireExpectedVersion();
+    public void Configure(CommandConfigurationBuilder<DeleteRoleCommand> builder) =>
+        builder.RequireExpectedVersion().NotShown(command => command.Id);
 }

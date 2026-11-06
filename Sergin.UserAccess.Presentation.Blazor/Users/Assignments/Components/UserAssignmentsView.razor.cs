@@ -1,12 +1,15 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
+using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
+using Sergin.SharedKernel.Presentation.Localizations;
+using Sergin.UserAccess.Application.Configurations.Users.Assignments;
 using Sergin.UserAccess.Application.Contracts.Roles.Commands.GetAssignable;
 using Sergin.UserAccess.Application.Contracts.Scopes.Commands.GetTree;
 using Sergin.UserAccess.Application.Contracts.Users.Assignments.Commands.Assign;
 using Sergin.UserAccess.Application.Contracts.Users.Assignments.Commands.GetEffective;
 using Sergin.UserAccess.Application.Contracts.Users.Assignments.Commands.GetList;
 using Sergin.UserAccess.Application.Contracts.Users.Assignments.Commands.Revoke;
+using Sergin.UserAccess.Presentation.Blazor.Roles;
 using Sergin.UserAccess.Presentation.Blazor.Users.Assignments.Models;
 
 namespace Sergin.UserAccess.Presentation.Blazor.Users.Assignments.Components;
@@ -32,7 +35,19 @@ public sealed partial class UserAssignmentsView
     private ISerginDispatcher Dispatcher { get; set; } = default!;
 
     [Inject]
+    private ICultureFormatter Formatter { get; set; } = default!;
+
+    [Inject]
     private IUiErrorPresenter ErrorPresenter { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer Localizer { get; set; } = default!;
+
+    [Inject]
+    private PermissionCatalog Catalog { get; set; } = default!;
+
+    // Both date pickers say the same: a period may stay open at either end.
+    private string OptionalHint => Localizer.Text(AssignmentTexts.ValidFromUtc.Hint!);
 
     protected override async Task OnParametersSetAsync()
     {
@@ -120,11 +135,24 @@ public sealed partial class UserAssignmentsView
     // A picked calendar day is that day's UTC midnight.
     private static DateTime? AsUtc(DateTime? day) => day is { } value ? DateTime.SpecifyKind(value.Date, DateTimeKind.Utc) : null;
 
-    private static string Period(UserAssignmentItem assignment) => (assignment.ValidFromUtc, assignment.ValidUntilUtc) switch
+    private string Period(UserAssignmentItem assignment) => (assignment.ValidFromUtc, assignment.ValidUntilUtc) switch
     {
-        (null, null) => "Always",
-        ({ } from, null) => string.Create(CultureInfo.CurrentCulture, $"From {from:d}"),
-        (null, { } until) => string.Create(CultureInfo.CurrentCulture, $"Until {until:d}"),
-        ({ } from, { } until) => string.Create(CultureInfo.CurrentCulture, $"{from:d} to {until:d}"),
+        (null, null) => Localizer.Text(AssignmentTexts.Always),
+        ({ } from, null) => Localizer.Text(AssignmentTexts.From, new { From = Day(from) }),
+        (null, { } until) => Localizer.Text(AssignmentTexts.Until, new { Until = Day(until) }),
+        ({ } from, { } until) => Localizer.Text(AssignmentTexts.Between, new { From = Day(from), Until = Day(until) }),
     };
+
+    private string Covers(bool includeSubtree) =>
+        Localizer.Text(includeSubtree ? AssignmentTexts.ScopeAndBelow : AssignmentTexts.ScopeOnly);
+
+    // The role's name and its owner are user data, filled into the declared shape.
+    private string RoleOption(AssignableRoleItem role) =>
+        Localizer.Text(AssignmentTexts.RoleOption, new { Role = role.Name, OwnerScope = role.OwnerScopeName });
+
+    // Each permission by its translated label; one the catalogue no longer defines by its raw name.
+    private string PermissionsOf(EffectivePermissionItem item) =>
+        string.Join(", ", item.Permissions.Select(permission => PermissionLabels.Of(Catalog, Localizer, permission)));
+
+    private string Day(DateTime utc) => Formatter.Date(new DateTimeOffset(DateTime.SpecifyKind(utc, DateTimeKind.Utc)));
 }

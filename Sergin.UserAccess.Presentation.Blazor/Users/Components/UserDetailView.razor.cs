@@ -29,18 +29,21 @@ public sealed partial class UserDetailView
     [Inject]
     private IDialogService DialogService { get; set; } = default!;
 
+    [Inject]
+    private IStringLocalizer Localizer { get; set; } = default!;
+
     // A property, not a field: the tail is the page title's word until the load fills in the user name, and
     // on the not-found path it stays that way beside the problem panel.
     private IReadOnlyList<SerginBreadcrumb> Trail =>
     [
         SerginBreadcrumb.Of(UserAccessNavigation.Users),
-        new(user?.UserName ?? "User"),
+        user is null ? new(UserTexts.Singular) : SerginBreadcrumb.Data(user.UserName),
     ];
 
     // Users belong to no scope, so DeactivateUser passes a caller holding Manage on any scope.
     private IReadOnlyList<SerginPageAction> Actions =>
     [
-        new("Deactivate", Icons.Material.Outlined.PersonOff, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeactivateAsync),
+        new(UserTexts.Deactivate, Icons.Material.Outlined.PersonOff, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeactivateAsync),
             Permission: UserPermissions.Manage, AnyScope: true, Disabled: deactivating),
     ];
 
@@ -75,7 +78,7 @@ public sealed partial class UserDetailView
     private async Task DeactivateAsync()
     {
         if (!await DialogService.ConfirmDeleteAsync(
-                "Deactivate user", $"Deactivate {user?.UserName}? They can no longer sign in.", confirmText: "Deactivate"))
+                Localizer, UserTexts.DeactivateTitle, UserTexts.DeactivateConfirm, new { user?.UserName }, UserTexts.Deactivate))
         {
             return;
         }

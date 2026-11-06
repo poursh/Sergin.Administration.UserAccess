@@ -1,19 +1,36 @@
-using Sergin.SharedKernel.Application.Localizations;
 using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Domain.Securities;
+using Sergin.SharedKernel.Presentation.Blazor.Modules;
+using Sergin.UserAccess.Application.Configurations.Roles;
 
 namespace Sergin.UserAccess.Presentation.Blazor.Roles;
 
-/// <summary>What the role pages show for a permission or a module: localized text, never a raw key.</summary>
+/// <summary>What the role pages show for a permission or a module: a declared text in the caller's culture, never a raw key.</summary>
 internal static class PermissionLabels
 {
-    /// <summary>The module's localized name, or its schema when no resource exists.</summary>
-    public static string Module(ILocalizer localizer, string schema) =>
-        localizer.LocalizedOrDefault($"Permissions.{schema}", schema);
+    private const string PlatformSchema = "sys";
 
-    /// <summary>The permission's localized label, or its raw name when the catalogue does not define it.</summary>
-    public static string Of(PermissionCatalog catalog, ILocalizer localizer, string name) =>
+    /// <summary>
+    /// The module's name as its drawer group titles it; the platform's own permissions under <see cref="RoleTexts.PlatformModule"/>;
+    /// the schema for a module this host shows no group for.
+    /// </summary>
+    public static string Module(SerginUiModuleCatalog modules, IStringLocalizer localizer, string schema)
+    {
+        if (modules.Modules.FirstOrDefault(module => string.Equals(module.Schema, schema, StringComparison.Ordinal)) is { } found)
+        {
+            return localizer.Text(found.NavGroup.Title);
+        }
+
+        return string.Equals(schema, PlatformSchema, StringComparison.Ordinal) ? localizer.Text(RoleTexts.PlatformModule) : schema;
+    }
+
+    /// <summary>The permission's label as the catalogue declares it (<c>PermissionCatalog.LabelOf</c>), or its raw name when the catalogue does not define it.</summary>
+    public static string Of(PermissionCatalog catalog, IStringLocalizer localizer, string name) =>
         Permission.TryCreate(name, out Permission? permission) && catalog.TryGet(permission, out PermissionDefinition? definition)
-            ? localizer[definition.Label].Value
+            ? Of(catalog, localizer, definition)
             : name;
+
+    /// <summary>A defined permission's label, translated.</summary>
+    public static string Of(PermissionCatalog catalog, IStringLocalizer localizer, PermissionDefinition definition) =>
+        localizer.Text(catalog.LabelOf(definition));
 }

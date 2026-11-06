@@ -1,4 +1,5 @@
 ﻿using Sergin.SharedKernel.Domain;
+using Sergin.SharedKernel.Domain.Localizations;
 using Sergin.SharedKernel.Domain.Securities;
 
 namespace Sergin.UserAccess.Domain.Scopes;
@@ -76,12 +77,15 @@ public class Scope : AggregateRoot<ScopeId>
 
         if (IsRoot)
         {
-            return Error.Validation(nameof(ParentId), "The root scope cannot be moved.");
+            return Error.Validation(nameof(ParentId), "The root scope cannot be moved.", ErrorText.Of(ScopeErrorKeys.RootCannotMove));
         }
 
         if (Path.IsAncestorOrSelfOf(newParent.Path))
         {
-            return Error.Validation(nameof(ParentId), "A scope cannot be moved under itself or one of its descendants.");
+            return Error.Validation(
+                nameof(ParentId),
+                "A scope cannot be moved under itself or one of its descendants.",
+                ErrorText.Of(ScopeErrorKeys.MoveUnderItself));
         }
 
         if (newParent.Id == ParentId)
