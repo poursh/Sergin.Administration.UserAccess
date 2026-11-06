@@ -96,6 +96,9 @@ public sealed partial class RoleDetailView
 
     protected override void OnInitialized() => validation = FormValidator.RulesFor(ToRenameCommand);
 
+    // The pickers' module headings, one per drawer group, so modules sharing a group show once.
+    private IReadOnlyList<PermissionPickerSection> PickerSections => PermissionLabels.Sections(Catalog, Modules, Localizer);
+
     private string LabelOf(string? name) => name is null ? string.Empty : PermissionLabels.Of(Catalog, Localizer, name);
 
     // A stored row that is not even a well-formed name is unknown too, not a render failure.

@@ -58,6 +58,9 @@ public sealed partial class RoleCreateView
         new(RoleTexts.New),
     ];
 
+    // The pickers' module headings, one per drawer group, so modules sharing a group show once.
+    private IReadOnlyList<PermissionPickerSection> PickerSections => PermissionLabels.Sections(Catalog, Modules, Localizer);
+
     private string LabelOf(string? name) => name is null ? string.Empty : PermissionLabels.Of(Catalog, Localizer, name);
 
     private string SelectedText(IReadOnlyList<string> selected) =>

@@ -5,10 +5,10 @@
                Label="@Localizer.Text(RoleTexts.InheritableOnCreate)" />
     <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" MultiSelection="true" ToStringFunc="@LabelOf" MultiSelectionTextFunc="@SelectedText" @bind-SelectedValues="model.Permissions" Label="@Localizer.Text(RoleTexts.Permissions.Label)"
                For="@(() => model.Name)">
-        @foreach (PermissionCatalogModule module in Catalog.Grouped())
+        @foreach (PermissionPickerSection picker in PickerSections)
         {
-            <PermissionSubheader>@PermissionLabels.Module(Modules, Localizer, module.Schema)</PermissionSubheader>
-            @foreach (PermissionCatalogGroup group in module.Groups)
+            <PermissionSubheader>@picker.Title</PermissionSubheader>
+            @foreach (PermissionCatalogGroup group in picker.Groups)
             {
                 <PermissionSubheader Class="pl-6">@Localizer.Text(group.Title)</PermissionSubheader>
                 @foreach (PermissionDefinition definition in group.Permissions)
