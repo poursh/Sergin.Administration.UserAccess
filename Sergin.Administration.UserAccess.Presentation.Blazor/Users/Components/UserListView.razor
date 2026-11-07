@@ -1,5 +1,5 @@
 @* Searchable="false": UserQueryRepository reads paging only, so a search box, sort label or filter would do nothing. *@
-<SerginAggregateListView TitleText="UserTexts.Title" Trail="Trail" Actions="Actions">
+<SerginAggregateListView TitleText="UserUiTexts.Title" Trail="Trail" Actions="Actions">
     <HeaderActions>
         <SerginReloadButton OnReload="ReloadAsync" />
     </HeaderActions>
@@ -7,11 +7,11 @@
         <SerginAggregateList @ref="list" TItem="GetUserListItem" Load="LoadAsync" Searchable="false">
             <HeaderContent>
                 <MudTh>@Localizer.Text(UserTexts.UserName.Label)</MudTh>
-                <MudTh>@Localizer.Text(UserTexts.Identifier)</MudTh>
+                <MudTh>@Localizer.Text(UserUiTexts.Identifier)</MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="@Localizer.Text(UserTexts.UserName.Label)"><MudLink Href="@($"/ua/users/{context.Id}")">@context.UserName</MudLink></MudTd>
-                <MudTd DataLabel="@Localizer.Text(UserTexts.Identifier)">@context.Id</MudTd>
+                <MudTd DataLabel="@Localizer.Text(UserUiTexts.Identifier)">@context.Id</MudTd>
             </RowTemplate>
         </SerginAggregateList>
     </ChildContent>

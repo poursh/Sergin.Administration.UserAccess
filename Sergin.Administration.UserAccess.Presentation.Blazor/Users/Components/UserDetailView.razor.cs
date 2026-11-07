@@ -43,7 +43,7 @@ public sealed partial class UserDetailView
     // Users belong to no scope, so DeactivateUser passes a caller holding Manage on any scope.
     private IReadOnlyList<SerginPageAction> Actions =>
     [
-        new(UserTexts.Deactivate, Icons.Material.Outlined.PersonOff, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeactivateAsync),
+        new(UserUiTexts.Deactivate, Icons.Material.Outlined.PersonOff, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeactivateAsync),
             Permission: UserPermissions.Manage, AnyScope: true, Disabled: deactivating),
     ];
 
@@ -78,7 +78,7 @@ public sealed partial class UserDetailView
     private async Task DeactivateAsync()
     {
         if (!await DialogService.ConfirmDeleteAsync(
-                Localizer, UserTexts.DeactivateTitle, UserTexts.DeactivateConfirm, new { user?.UserName }, UserTexts.Deactivate))
+                Localizer, UserUiTexts.DeactivateTitle, UserUiTexts.DeactivateConfirm, new { user?.UserName }, UserUiTexts.Deactivate))
         {
             return;
         }

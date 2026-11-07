@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
-using Sergin.Administration.UserAccess.Application.Configurations.Scopes;
 using Sergin.Administration.UserAccess.Application.Contracts.Scopes.Commands.Create;
 using Sergin.Administration.UserAccess.Domain.Scopes;
 using Sergin.Administration.UserAccess.Presentation.Blazor.Scopes.Models;
@@ -41,7 +40,7 @@ public sealed partial class ScopeCreateView
     private IReadOnlyList<SerginBreadcrumb> Trail { get; } =
     [
         SerginBreadcrumb.Of(UserAccessNavigation.Scopes),
-        new(ScopeTexts.New),
+        new(ScopeUiTexts.New),
     ];
 
     protected override void OnInitialized() => validation = FormValidator.RulesFor(ToCommand);

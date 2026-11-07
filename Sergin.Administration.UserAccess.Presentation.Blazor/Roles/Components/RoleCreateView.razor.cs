@@ -3,7 +3,6 @@ using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Domain.Securities;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
 using Sergin.SharedKernel.Presentation.Blazor.Modules;
-using Sergin.Administration.UserAccess.Application.Configurations.Roles;
 using Sergin.Administration.UserAccess.Application.Configurations.Scopes;
 using Sergin.Administration.UserAccess.Application.Contracts.Roles.Commands.Create;
 using Sergin.Administration.UserAccess.Domain.Roles;
@@ -55,7 +54,7 @@ public sealed partial class RoleCreateView
     [
         SerginBreadcrumb.Of(UserAccessNavigation.Scopes),
         new(ScopeTexts.Singular, $"/ua/scopes/{ScopeId}"),
-        new(RoleTexts.New),
+        new(RoleUiTexts.New),
     ];
 
     // The pickers' module headings, one per drawer group, so modules sharing a group show once.

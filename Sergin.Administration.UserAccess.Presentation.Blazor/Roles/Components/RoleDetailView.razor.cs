@@ -180,7 +180,7 @@ public sealed partial class RoleDetailView
         }
 
         if (!await DialogService.ConfirmDeleteAsync(
-                Localizer, RoleTexts.DeleteTitle, cascade ? RoleTexts.DeleteCascadeConfirm : RoleTexts.DeleteConfirm, new { role.Name }))
+                Localizer, RoleUiTexts.DeleteTitle, cascade ? RoleUiTexts.DeleteCascadeConfirm : RoleUiTexts.DeleteConfirm, new { role.Name }))
         {
             return;
         }

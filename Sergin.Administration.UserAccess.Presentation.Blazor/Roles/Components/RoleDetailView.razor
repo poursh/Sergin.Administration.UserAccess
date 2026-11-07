@@ -8,12 +8,12 @@
         @if (role is not null)
         {
             <SerginDetailField LabelText="RoleTexts.Name.Label" Value="@role.Name" />
-            <SerginDetailField LabelText="RoleTexts.OwnedBy">
+            <SerginDetailField LabelText="RoleUiTexts.OwnedBy">
                 <MudLink Href="@($"/ua/scopes/{role.OwnerScopeId}")">@role.OwnerScopeName</MudLink>
             </SerginDetailField>
             <SerginDetailField LabelText="RoleTexts.IsInheritable.Label">
                 <MudSwitch T="bool" Value="role.IsInheritable" ValueChanged="SetInheritableAsync" Color="Color.Primary"
-                           Disabled="busy" Label="@Localizer.Text(RoleTexts.InheritableOnDetail)" />
+                           Disabled="busy" Label="@Localizer.Text(RoleUiTexts.InheritableOnDetail)" />
             </SerginDetailField>
         }
     </Fields>
@@ -41,13 +41,13 @@
                 }
                 @if (GrantedUnknown.Count > 0)
                 {
-                    <MudText Typo="Typo.subtitle2">@Localizer.Text(RoleTexts.Unknown)</MudText>
+                    <MudText Typo="Typo.subtitle2">@Localizer.Text(RoleUiTexts.Unknown)</MudText>
                     @foreach (string permission in GrantedUnknown)
                     {
                         <MudChip T="string" Value="@permission" OnClose="@(_ => RevokeAsync(permission))">@permission</MudChip>
                     }
                 }
-                <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" @bind-Value="permissionToGrant" ToStringFunc="@LabelOf" Label="@Localizer.Text(RoleTexts.AddPermission)">
+                <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" @bind-Value="permissionToGrant" ToStringFunc="@LabelOf" Label="@Localizer.Text(RoleUiTexts.AddPermission)">
                     @foreach (PermissionPickerSection picker in PickerSections)
                     {
                         <PermissionSubheader>@picker.Title</PermissionSubheader>

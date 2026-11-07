@@ -15,3 +15,7 @@ global using Sergin.Administration.UserAccess.Application.Contracts.Users.Comman
 global using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.GetOne;
 global using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.ProvisionExternalUser;
 global using Microsoft.Extensions.Localization;
+global using Sergin.Administration.UserAccess.Presentation.Blazor.Roles;
+global using Sergin.Administration.UserAccess.Presentation.Blazor.Scopes;
+global using Sergin.Administration.UserAccess.Presentation.Blazor.Users;
+global using Sergin.Administration.UserAccess.Presentation.Blazor.Users.Assignments;
