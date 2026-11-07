@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sergin.SharedKernel.Application.Localizations;
 using Sergin.SharedKernel.Infrastructure.Data.EFCore;
 using Sergin.SharedKernel.Modules;
 using Sergin.Administration.UserAccess.Application;
@@ -31,6 +32,8 @@ public sealed class UserAccessModule : ISerginWebApiModule, ISerginWebUiModule
     public Assembly UiAssembly => UserAccessBlazorAssemblyReference.Assembly;
 
     public SerginNavGroup NavGroup => UserAccessNavigation.Group;
+
+    public TextDefinition NavCaption => UserAccessUiTexts.MenuTitle;
 
     public IReadOnlyCollection<SerginNavItem> NavItems => UserAccessNavigation.Items;
 
