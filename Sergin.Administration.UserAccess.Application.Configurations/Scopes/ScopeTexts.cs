@@ -3,8 +3,8 @@ using Sergin.SharedKernel.Application.Localizations;
 namespace Sergin.Administration.UserAccess.Application.Configurations.Scopes;
 
 /// <summary>
-/// The Scope aggregate's texts: one field per command property a person sees, the scope tree and the scope pages, and
-/// the errors raised about a scope, by its validators and by <c>Scope.MoveUnder</c> (named through
+/// The Scope aggregate's texts: one field per command property a person sees, its name, and the errors raised about a
+/// scope (the tree's and the pages' texts are <c>ScopeUiTexts</c>, in the Blazor RCL, on this category), by its validators and by <c>Scope.MoveUnder</c> (named through
 /// <c>ScopeErrorKeys</c>).
 /// </summary>
 public static class ScopeTexts

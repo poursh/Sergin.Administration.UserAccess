@@ -4,7 +4,8 @@ namespace Sergin.Administration.UserAccess.Application.Configurations.Roles;
 
 /// <summary>
 /// The Role aggregate's texts: one field per command property a person sees (the role's name is labelled Code, as the
-/// pages show it), the role pages' titles, confirms and permission pickers, and its validators' own messages.
+/// pages show it), its name, and its validators' own messages. The texts only the pages show are <c>RoleUiTexts</c>, in
+/// the Blazor RCL, on this category.
 /// </summary>
 public static class RoleTexts
 {

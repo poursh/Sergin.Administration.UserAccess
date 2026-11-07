@@ -4,7 +4,7 @@ namespace Sergin.Administration.UserAccess.Application.Configurations.Users.Assi
 
 /// <summary>
 /// The texts of a user's role assignments, a category nested under <see cref="UserTexts"/>: the assign form's fields,
-/// the assignments and effective-permissions sections, and the errors <c>User.Assign</c> and <c>RoleAssignment</c>
+/// and the errors <c>User.Assign</c> and <c>RoleAssignment</c>
 /// raise (named through <c>UserErrorKeys</c> and <c>RoleAssignmentErrorKeys</c>).
 /// </summary>
 public static class AssignmentTexts

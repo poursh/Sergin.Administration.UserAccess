@@ -3,8 +3,8 @@ using Sergin.SharedKernel.Application.Localizations;
 namespace Sergin.Administration.UserAccess.Application.Configurations.Users;
 
 /// <summary>
-/// The User aggregate's texts: its fields and the user pages' titles and confirms. Its role assignments declare theirs
-/// in <c>AssignmentTexts</c>, a child category.
+/// The User aggregate's texts: its fields and its name. Its role assignments declare theirs in <c>AssignmentTexts</c>, a
+/// child category. The texts only the pages show are <c>UserUiTexts</c> and <c>AssignmentUiTexts</c>, in the Blazor RCL.
 /// </summary>
 /// <remarks>
 /// The User aggregate names no category with <c>Texts(...)</c>; each user command's configuration names this one
