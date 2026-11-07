@@ -18,10 +18,10 @@ public partial class InitialCreate : Migration
     private const string ViewerRoleId = "01920000-0000-7000-8000-0000000000a2";
     private const string SystemActor = "01920000-0000-7000-8000-00000000000f";
 
+    // Only this module's own permissions: the migration must not depend on which other modules a host composes. A
+    // host grants the viewer its modules' reads itself (the Compose dev seed does it for DeviceManagement).
     private static readonly string[] ViewerPermissions =
     [
-        "permission.dm.devices.read",
-        "permission.dm.manufacturers.read",
         "permission.ua.users.read",
     ];
 
