@@ -1,0 +1,23 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.GetList;
+using Sergin.SharedKernel.Application;
+using Sergin.SharedKernel.Presentation.WebApi.Endpoints.Results;
+
+namespace Sergin.Administration.UserAccess.Presentation.WebApi.Users.Endpoints.GetList;
+internal class GetUserListEndpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder routeBuilder)
+    {
+        routeBuilder
+            .MapGet("/users", async ([AsParameters] ListQueryRequestModel request, ISender sender) =>
+            {
+                ErrorOr<ListQueryResponse<GetUserListItem>> res = await sender.Send(
+                    new GetUserListQueryCommand(request.ToPaggination(), request.Term, request.Filtering, request.Sorting));
+
+                return res.ToApiResult();
+            })
+            .Produces<ListQueryResponse<GetUserListItem>>();
+    }
+}

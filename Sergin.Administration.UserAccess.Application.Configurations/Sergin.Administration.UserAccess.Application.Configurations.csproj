@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Sergin.Administration.UserAccess.Application.Contracts\Sergin.Administration.UserAccess.Application.Contracts.csproj" />
+  </ItemGroup>
+</Project>

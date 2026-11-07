@@ -1,0 +1,54 @@
+﻿using System.Data.Common;
+using Sergin.Administration.UserAccess.Application.Users;
+using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.GetList;
+using Sergin.SharedKernel.Application;
+using Sergin.SharedKernel.Application.Commands.Queries;
+using Sergin.SharedKernel.Infrastracture.Data;
+using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.GetOne;
+using Sergin.Administration.UserAccess.Domain.Users;
+
+namespace Sergin.Administration.UserAccess.Infrastructure.Users.Repositories.Queries;
+
+internal sealed class UserQueryRepository(
+    IDbConnectionFactory connectionFactory) : IUserAllQueryRepository
+{
+    public async Task<UserQueryResponse?> GetUserById(
+        UserInternalId Id, CancellationToken cancellationToken = default)
+    {
+        using DbConnection connection = await connectionFactory.CreateConnectionAsync();
+
+        string queries =
+           """
+            SELECT id, user_name AS userName
+            FROM ua.users
+            WHERE id = @Id;
+            """;
+
+        return await connection.QuerySingleOrDefaultAsync<UserQueryResponse>(
+            queries, new { Id = Id.Value });
+    }
+
+    public async Task<ListQueryResponse<GetUserListItem>> GetListAsync(
+        ListQuery query, CancellationToken cancellationToken = default)
+    {
+        using DbConnection connection = await connectionFactory.CreateConnectionAsync();
+
+        string queries =
+            """
+            SELECT count(*) FROM ua.users;
+
+            SELECT id, user_name AS userName
+            FROM ua.users
+            ORDER BY id
+            LIMIT @PageSize OFFSET @Offset;
+            """;
+
+        GridReader res = await connection.QueryMultipleAsync(
+            queries, new { PageSize = query.Paggination.Size.Value, Offset = query.Paggination.Skip });
+
+        int count = await res.ReadSingleAsync<int>();
+        IReadOnlyCollection<GetUserListItem> list = [.. await res.ReadAsync<GetUserListItem>()];
+
+        return new ListQueryResponse<GetUserListItem>(list, count);
+    }
+}
