@@ -2,9 +2,9 @@
 @layout Sergin.SharedKernel.Presentation.Blazor.Layout.SerginMainLayout
 @* The scope pages' layout: the scope tree, kept while the user moves between the tree's own page, a scope and a new
    scope, with the page at the current route on the right. *@
-<SerginAggregateTree TNode="ScopeTreeItem" TitleText="ScopeTexts.Title" Href="/ua/scopes" Trail="Trail" LayoutKey="ua.scopes" GroupKey="scope"
+<SerginAggregateTree TNode="ScopeTreeItem" TitleText="ScopeUiTexts.Title" Href="/ua/scopes" Trail="Trail" LayoutKey="ua.scopes" GroupKey="scope"
                      Load="LoadAsync" NodeId="IdOf" ParentId="ParentIdOf" NodeLabel="NameOf" NodeIcon="IconOf" NodeHref="HrefOf"
                      AddChild="AddChildOf" Delete="DeleteAsync" DeletePermission="ScopePermissions.Manage" DeleteAnyScope="true"
-                     DeleteTitleText="ScopeTexts.DeleteTitle" FilterPlaceholderText="ScopeTexts.FilterPlaceholder" EmptyMessage="ScopeTexts.TreeEmpty">
+                     DeleteTitleText="ScopeUiTexts.DeleteTitle" FilterPlaceholderText="ScopeUiTexts.FilterPlaceholder" EmptyMessage="ScopeUiTexts.TreeEmpty">
     @Body
 </SerginAggregateTree>

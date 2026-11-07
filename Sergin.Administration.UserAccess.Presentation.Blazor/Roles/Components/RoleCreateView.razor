@@ -1,8 +1,8 @@
-<SerginFormView TitleText="RoleTexts.New" Trail="Trail"
+<SerginFormView TitleText="RoleUiTexts.New" Trail="Trail"
                 Model="model" Validation="validation" OnSubmit="OnSubmit" Submitting="submitting" SubmitLabelText="CommonTexts.Create" CancelHref="@($"/ua/scopes/{ScopeId}")">
     <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="model.Name" Label="@Localizer.Text(RoleTexts.Name.Label)" For="@(() => model.Name)" Immediate="true" />
     <MudSwitch T="bool" @bind-Value="model.IsInheritable" Color="Color.Primary"
-               Label="@Localizer.Text(RoleTexts.InheritableOnCreate)" />
+               Label="@Localizer.Text(RoleUiTexts.InheritableOnCreate)" />
     <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" MultiSelection="true" ToStringFunc="@LabelOf" MultiSelectionTextFunc="@SelectedText" @bind-SelectedValues="model.Permissions" Label="@Localizer.Text(RoleTexts.Permissions.Label)"
                For="@(() => model.Name)">
         @foreach (PermissionPickerSection picker in PickerSections)

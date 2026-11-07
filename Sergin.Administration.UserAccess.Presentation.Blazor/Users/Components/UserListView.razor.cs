@@ -14,7 +14,7 @@ public sealed partial class UserListView
     // Users belong to no scope, so CreateUser passes a caller holding Manage on any scope.
     private IReadOnlyList<SerginPageAction> Actions { get; } =
     [
-        new(UserTexts.New, Icons.Material.Filled.Add, SerginActionKind.Primary, Href: "/ua/users/new",
+        new(UserUiTexts.New, Icons.Material.Filled.Add, SerginActionKind.Primary, Href: "/ua/users/new",
             Permission: UserPermissions.Manage, AnyScope: true),
     ];
 

@@ -1,8 +1,8 @@
 @* Two embedded sections of the user detail view: the assignments with the assign form, and what they add up to. *@
-<SerginEntityListView TitleText="AssignmentTexts.Title" Count="assignments.Count">
+<SerginEntityListView TitleText="AssignmentUiTexts.Title" Count="assignments.Count">
     @if (assignments.Count == 0)
     {
-        <MudText Typo="Typo.body2" Class="mb-2">@Localizer.Text(AssignmentTexts.Empty)</MudText>
+        <MudText Typo="Typo.body2" Class="mb-2">@Localizer.Text(AssignmentUiTexts.Empty)</MudText>
     }
     else
     {
@@ -11,8 +11,8 @@
                 <tr>
                     <th>@Localizer.Text(AssignmentTexts.RoleId.Label)</th>
                     <th>@Localizer.Text(AssignmentTexts.ScopeId.Label)</th>
-                    <th>@Localizer.Text(AssignmentTexts.Covers)</th>
-                    <th>@Localizer.Text(AssignmentTexts.Valid)</th>
+                    <th>@Localizer.Text(AssignmentUiTexts.Covers)</th>
+                    <th>@Localizer.Text(AssignmentUiTexts.Valid)</th>
                     <th></th>
                 </tr>
             </thead>
@@ -28,11 +28,11 @@
                             @if (assignment.RevokedAtUtc is null)
                             {
                                 <MudButton Size="Size.Small" Color="Color.Error" Disabled="busy"
-                                           OnClick="@(() => RevokeAsync(assignment.Id))">@Localizer.Text(AssignmentTexts.Revoke)</MudButton>
+                                           OnClick="@(() => RevokeAsync(assignment.Id))">@Localizer.Text(AssignmentUiTexts.Revoke)</MudButton>
                             }
                             else
                             {
-                                <MudText Typo="Typo.caption">@Localizer.Text(AssignmentTexts.Revoked)</MudText>
+                                <MudText Typo="Typo.caption">@Localizer.Text(AssignmentUiTexts.Revoked)</MudText>
                             }
                         </td>
                     </tr>
@@ -43,7 +43,7 @@
 
     <MudCard Outlined="true" Class="mt-4">
         <MudCardContent>
-            <MudText Typo="Typo.subtitle1">@Localizer.Text(AssignmentTexts.AssignTitle)</MudText>
+            <MudText Typo="Typo.subtitle1">@Localizer.Text(AssignmentUiTexts.AssignTitle)</MudText>
             <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="Guid" Value="model.ScopeId" ValueChanged="OnScopeChangedAsync" Label="@Localizer.Text(AssignmentTexts.ScopeId.Label)">
                 @foreach (ScopeTreeItem scope in scopes)
                 {
@@ -64,15 +64,15 @@
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                       Disabled="@(busy || model.RoleId == Guid.Empty)" OnClick="AssignAsync">@Localizer.Text(AssignmentTexts.Assign)</MudButton>
+                       Disabled="@(busy || model.RoleId == Guid.Empty)" OnClick="AssignAsync">@Localizer.Text(AssignmentUiTexts.Assign)</MudButton>
         </MudCardActions>
     </MudCard>
 </SerginEntityListView>
 
-<SerginEntityListView TitleText="AssignmentTexts.EffectiveTitle" Count="effective.Count">
+<SerginEntityListView TitleText="AssignmentUiTexts.EffectiveTitle" Count="effective.Count">
     @if (effective.Count == 0)
     {
-        <MudText Typo="Typo.body2">@Localizer.Text(AssignmentTexts.NoPermissions)</MudText>
+        <MudText Typo="Typo.body2">@Localizer.Text(AssignmentUiTexts.NoPermissions)</MudText>
     }
     else
     {
@@ -80,8 +80,8 @@
             <thead>
                 <tr>
                     <th>@Localizer.Text(AssignmentTexts.ScopeId.Label)</th>
-                    <th>@Localizer.Text(AssignmentTexts.Covers)</th>
-                    <th>@Localizer.Text(AssignmentTexts.Permissions)</th>
+                    <th>@Localizer.Text(AssignmentUiTexts.Covers)</th>
+                    <th>@Localizer.Text(AssignmentUiTexts.Permissions)</th>
                 </tr>
             </thead>
             <tbody>

@@ -75,9 +75,9 @@ public sealed partial class ScopeDetailView
     // The root cannot be deleted; every other scope can, once it is a leaf (the handler refuses otherwise).
     private IReadOnlyList<SerginPageAction> Actions =>
     [
-        new(ScopeTexts.NewChild, Icons.Material.Outlined.Add, SerginActionKind.Secondary, Href: $"/ua/scopes/new?parentId={Id}",
+        new(ScopeUiTexts.NewChild, Icons.Material.Outlined.Add, SerginActionKind.Secondary, Href: $"/ua/scopes/new?parentId={Id}",
             Permission: ScopePermissions.Manage, AnyScope: true),
-        new(ScopeTexts.NewRoleHere, Icons.Material.Outlined.Badge, SerginActionKind.Secondary, Href: $"/ua/roles/new?scopeId={Id}"),
+        new(ScopeUiTexts.NewRoleHere, Icons.Material.Outlined.Badge, SerginActionKind.Secondary, Href: $"/ua/roles/new?scopeId={Id}"),
         .. scope?.ParentId is null
             ? Array.Empty<SerginPageAction>()
             : [new(CommonTexts.Delete, Icons.Material.Outlined.Delete, SerginActionKind.Danger, OnClick: EventCallback.Factory.Create(this, DeleteAsync),
@@ -179,7 +179,7 @@ public sealed partial class ScopeDetailView
 
     private async Task DeleteAsync()
     {
-        if (!await DialogService.ConfirmDeleteAsync(Localizer, ScopeTexts.DeleteTitle, ScopeTexts.DeleteConfirm, new { scope?.Name }))
+        if (!await DialogService.ConfirmDeleteAsync(Localizer, ScopeUiTexts.DeleteTitle, ScopeUiTexts.DeleteConfirm, new { scope?.Name }))
         {
             return;
         }

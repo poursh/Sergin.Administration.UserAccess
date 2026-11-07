@@ -137,18 +137,18 @@ public sealed partial class UserAssignmentsView
 
     private string Period(UserAssignmentItem assignment) => (assignment.ValidFromUtc, assignment.ValidUntilUtc) switch
     {
-        (null, null) => Localizer.Text(AssignmentTexts.Always),
-        ({ } from, null) => Localizer.Text(AssignmentTexts.From, new { From = Day(from) }),
-        (null, { } until) => Localizer.Text(AssignmentTexts.Until, new { Until = Day(until) }),
-        ({ } from, { } until) => Localizer.Text(AssignmentTexts.Between, new { From = Day(from), Until = Day(until) }),
+        (null, null) => Localizer.Text(AssignmentUiTexts.Always),
+        ({ } from, null) => Localizer.Text(AssignmentUiTexts.From, new { From = Day(from) }),
+        (null, { } until) => Localizer.Text(AssignmentUiTexts.Until, new { Until = Day(until) }),
+        ({ } from, { } until) => Localizer.Text(AssignmentUiTexts.Between, new { From = Day(from), Until = Day(until) }),
     };
 
     private string Covers(bool includeSubtree) =>
-        Localizer.Text(includeSubtree ? AssignmentTexts.ScopeAndBelow : AssignmentTexts.ScopeOnly);
+        Localizer.Text(includeSubtree ? AssignmentUiTexts.ScopeAndBelow : AssignmentUiTexts.ScopeOnly);
 
     // The role's name and its owner are user data, filled into the declared shape.
     private string RoleOption(AssignableRoleItem role) =>
-        Localizer.Text(AssignmentTexts.RoleOption, new { Role = role.Name, OwnerScope = role.OwnerScopeName });
+        Localizer.Text(AssignmentUiTexts.RoleOption, new { Role = role.Name, OwnerScope = role.OwnerScopeName });
 
     // Each permission by its translated label; one the catalogue no longer defines by its raw name.
     private string PermissionsOf(EffectivePermissionItem item) =>

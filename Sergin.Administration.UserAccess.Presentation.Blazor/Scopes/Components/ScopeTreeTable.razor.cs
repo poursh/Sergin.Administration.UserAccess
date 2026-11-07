@@ -1,7 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Sergin.SharedKernel.Presentation.Localizations;
-using Sergin.Administration.UserAccess.Application.Configurations.Scopes;
 using Sergin.Administration.UserAccess.Application.Contracts.Scopes.Commands.GetTree;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Scopes.Components;
@@ -25,7 +24,7 @@ public sealed partial class ScopeTreeTable
 
     /// <summary>What shows when there is no scope to list.</summary>
     [Parameter]
-    public TextDefinition EmptyMessage { get; set; } = ScopeTexts.NoScopes;
+    public TextDefinition EmptyMessage { get; set; } = ScopeUiTexts.NoScopes;
 
     [Inject]
     private IStringLocalizer Localizer { get; set; } = default!;

@@ -1,4 +1,3 @@
-using Sergin.Administration.UserAccess.Application.Configurations.Roles;
 using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Domain.Securities;
 using Sergin.SharedKernel.Modules;
@@ -17,7 +16,7 @@ internal static class PermissionLabels
     private const string PlatformSchema = "sys";
 
     /// <summary>
-    /// The module's name as its drawer group titles it; the platform's own permissions under <see cref="RoleTexts.PlatformModule"/>;
+    /// The module's name as its drawer group titles it; the platform's own permissions under <see cref="RoleUiTexts.PlatformModule"/>;
     /// the schema for a module this host shows no group for.
     /// </summary>
     public static string Module(SerginUiModuleCatalog modules, IStringLocalizer localizer, string schema)
@@ -27,7 +26,7 @@ internal static class PermissionLabels
             return localizer.Text(found.NavGroup.Title);
         }
 
-        return string.Equals(schema, PlatformSchema, StringComparison.Ordinal) ? localizer.Text(RoleTexts.PlatformModule) : schema;
+        return string.Equals(schema, PlatformSchema, StringComparison.Ordinal) ? localizer.Text(RoleUiTexts.PlatformModule) : schema;
     }
 
     /// <summary>

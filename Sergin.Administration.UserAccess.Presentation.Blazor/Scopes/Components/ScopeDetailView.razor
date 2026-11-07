@@ -10,13 +10,13 @@
             <SerginDetailField LabelText="ScopeTexts.Name.Label" Value="@scope.Name" />
             @if (scope.ParentId is { } parentId)
             {
-                <SerginDetailField LabelText="ScopeTexts.Under">
+                <SerginDetailField LabelText="ScopeUiTexts.Under">
                     <MudLink Href="@($"/ua/scopes/{parentId}")">@scope.ParentName</MudLink>
                 </SerginDetailField>
             }
             else
             {
-                <SerginDetailField LabelText="ScopeTexts.Under" Value="@Localizer.Text(ScopeTexts.TreeRoot)" />
+                <SerginDetailField LabelText="ScopeUiTexts.Under" Value="@Localizer.Text(ScopeUiTexts.TreeRoot)" />
             }
         }
     </Fields>
@@ -50,21 +50,21 @@
                     </MudCardContent>
                     <MudCardActions>
                         <MudButton Variant="Variant.Outlined" Color="Color.Primary"
-                                   Disabled="@(busy || newParentId == Guid.Empty)" OnClick="MoveAsync">@Localizer.Text(ScopeTexts.Move)</MudButton>
+                                   Disabled="@(busy || newParentId == Guid.Empty)" OnClick="MoveAsync">@Localizer.Text(ScopeUiTexts.Move)</MudButton>
                     </MudCardActions>
                 </MudCard>
             }
 
-            <MudText Typo="Typo.h6" Class="mt-6 mb-2">@Localizer.Text(ScopeTexts.ChildScopes)</MudText>
-            <ScopeTreeTable Scopes="tree" UnderId="Id" EmptyMessage="ScopeTexts.NoChildScopes" />
+            <MudText Typo="Typo.h6" Class="mt-6 mb-2">@Localizer.Text(ScopeUiTexts.ChildScopes)</MudText>
+            <ScopeTreeTable Scopes="tree" UnderId="Id" EmptyMessage="ScopeUiTexts.NoChildScopes" />
 
-            <MudText Typo="Typo.h6" Class="mt-6 mb-2">@Localizer.Text(ScopeTexts.RolesUsableHere)</MudText>
+            <MudText Typo="Typo.h6" Class="mt-6 mb-2">@Localizer.Text(ScopeUiTexts.RolesUsableHere)</MudText>
             <MudSimpleTable Hover="true" Dense="true">
                 <thead>
                     <tr>
-                        <th>@Localizer.Text(ScopeTexts.Role)</th>
-                        <th>@Localizer.Text(ScopeTexts.OwnedBy)</th>
-                        <th>@Localizer.Text(ScopeTexts.Inheritable)</th>
+                        <th>@Localizer.Text(ScopeUiTexts.Role)</th>
+                        <th>@Localizer.Text(ScopeUiTexts.OwnedBy)</th>
+                        <th>@Localizer.Text(ScopeUiTexts.Inheritable)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@
                         <tr>
                             <td><MudLink Href="@($"/ua/roles/{role.Id}")">@role.Name</MudLink></td>
                             <td>@role.OwnerScopeName</td>
-                            <td>@Localizer.Text(role.IsInheritable ? ScopeTexts.Yes : ScopeTexts.No)</td>
+                            <td>@Localizer.Text(role.IsInheritable ? ScopeUiTexts.Yes : ScopeUiTexts.No)</td>
                         </tr>
                     }
                 </tbody>

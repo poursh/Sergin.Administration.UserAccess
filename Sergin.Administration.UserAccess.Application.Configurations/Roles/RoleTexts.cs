@@ -4,7 +4,8 @@ namespace Sergin.Administration.UserAccess.Application.Configurations.Roles;
 
 /// <summary>
 /// The Role aggregate's texts: one field per command property a person sees (the role's name is labelled Code, as the
-/// pages show it), the role pages' titles, confirms and permission pickers, and its validators' own messages.
+/// pages show it), its name, and its validators' own messages. The texts only the pages show are <c>RoleUiTexts</c>, in
+/// the Blazor RCL, on this category.
 /// </summary>
 public static class RoleTexts
 {
@@ -25,30 +26,6 @@ public static class RoleTexts
     public static readonly FieldText Cascade = Category.Field("Cascade", "When deleting, also revoke every assignment of this role");
 
     public static readonly TextDefinition Singular = Category.Text("Singular", "Role");
-
-    public static readonly TextDefinition New = Category.Text("New", "New role");
-
-    public static readonly TextDefinition OwnedBy = Category.Text("OwnedBy", "Owned by");
-
-    public static readonly TextDefinition InheritableOnCreate =
-        Category.Text("InheritableOnCreate", "Inheritable: scopes below this one can use it too");
-
-    public static readonly TextDefinition InheritableOnDetail = Category.Text("InheritableOnDetail", "Scopes below the owner can use it too");
-
-    public static readonly TextDefinition Unknown =
-        Category.Text("Unknown", "Unknown", "Heads the granted permissions no module defines any more.");
-
-    public static readonly TextDefinition AddPermission = Category.Text("AddPermission", "Add permission");
-
-    public static readonly TextDefinition PlatformModule =
-        Category.Text("PlatformModule", "Platform", "Heads the platform's own permissions in the permission pickers.");
-
-    public static readonly TextDefinition DeleteTitle = Category.Text("DeleteTitle", "Delete role");
-
-    public static readonly TextDefinition DeleteConfirm = Category.Text("DeleteConfirm", "Delete {Name}? It can no longer be assigned.");
-
-    public static readonly TextDefinition DeleteCascadeConfirm =
-        Category.Text("DeleteCascadeConfirm", "Delete {Name} and revoke every assignment of it?");
 
     /// <summary><c>CreateRoleCommandValidator</c>, <c>RenameRoleCommandValidator</c>: BR-4, the name is taken along the scope's line.</summary>
     public static readonly TextDefinition NameTakenInLine = errors.Text(

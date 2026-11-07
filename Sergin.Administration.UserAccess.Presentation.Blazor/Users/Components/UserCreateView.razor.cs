@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
-using Sergin.Administration.UserAccess.Application.Configurations.Users;
 using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.Create;
 using Sergin.Administration.UserAccess.Domain.Users;
 using Sergin.Administration.UserAccess.Presentation.Blazor.Users.Models;
@@ -18,7 +17,7 @@ public sealed partial class UserCreateView
     private IReadOnlyList<SerginBreadcrumb> Trail { get; } =
     [
         SerginBreadcrumb.Of(UserAccessNavigation.Users),
-        new(UserTexts.New),
+        new(UserUiTexts.New),
     ];
 
     [Inject]
