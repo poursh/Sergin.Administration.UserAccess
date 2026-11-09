@@ -7,7 +7,7 @@ internal sealed class RevokeRolePermissionCommandValidator : AbstractValidator<R
 {
     public RevokeRolePermissionCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id.Value).NotEmpty().OverridePropertyName(nameof(RevokeRolePermissionCommand.Id));
         RuleFor(x => x.Permission).NotNull();
     }
 }

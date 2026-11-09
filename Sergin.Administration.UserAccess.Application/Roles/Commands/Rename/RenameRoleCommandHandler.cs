@@ -15,7 +15,7 @@ internal sealed class RenameRoleCommandHandler(
 {
     public async Task<ErrorOr<RenameRoleCommandResponse>> Handle(RenameRoleCommand request, CancellationToken cancellationToken)
     {
-        Role? role = await roles.GetAsync(new RoleId(request.Id), cancellationToken);
+        Role? role = await roles.GetAsync(request.Id, cancellationToken);
 
         if (role is null)
         {

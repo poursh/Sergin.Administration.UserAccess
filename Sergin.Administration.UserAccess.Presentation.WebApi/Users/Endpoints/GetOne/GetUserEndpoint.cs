@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.GetOne;
 using Sergin.SharedKernel.Presentation.WebApi.Endpoints.Results;
+using Sergin.Administration.UserAccess.Domain.Users;
 
 namespace Sergin.Administration.UserAccess.Presentation.WebApi.Users.Endpoints.GetOne;
 
@@ -12,7 +13,7 @@ internal class GetUserEndpoint : IEndpoint
     {
         routeBuilder.MapGet("/users/{userId:guid}", async ([FromRoute] Guid userId, ISender sender) =>
         {
-            ErrorOr<UserQueryResponse> res = await sender.Send(new GetUserByIdQueryCommand(userId));
+            ErrorOr<UserQueryResponse> res = await sender.Send(new GetUserByIdQueryCommand(new UserInternalId(userId)));
 
             return res.ToApiResult();
         });

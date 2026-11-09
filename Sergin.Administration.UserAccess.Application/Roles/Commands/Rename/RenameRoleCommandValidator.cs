@@ -10,7 +10,7 @@ internal sealed class RenameRoleCommandValidator : AbstractValidator<RenameRoleC
 {
     public RenameRoleCommandValidator(IRoleQueryRepository roles)
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id.Value).NotEmpty().OverridePropertyName(nameof(RenameRoleCommand.Id));
 
         RuleFor(x => x.Name.Value)
             .NotEmpty()
@@ -19,8 +19,8 @@ internal sealed class RenameRoleCommandValidator : AbstractValidator<RenameRoleC
 
         RuleFor(x => x.Name)
             .MustAsync(async (command, name, cancellationToken) =>
-                !await roles.IsNameTakenInLineOfRoleAsync(command.Id, name.Value, cancellationToken))
+                !await roles.IsNameTakenInLineOfRoleAsync(command.Id.Value, name.Value, cancellationToken))
             .WithMessage(_ => ValidationTexts.Template(RoleTexts.NameTakenInLine))
-            .When(x => x.Id != Guid.Empty && !string.IsNullOrWhiteSpace(x.Name.Value));
+            .When(x => x.Id.Value != Guid.Empty && !string.IsNullOrWhiteSpace(x.Name.Value));
     }
 }

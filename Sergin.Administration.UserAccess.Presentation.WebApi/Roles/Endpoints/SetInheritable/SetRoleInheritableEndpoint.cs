@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sergin.SharedKernel.Presentation.WebApi.Endpoints.Results;
 using Sergin.Administration.UserAccess.Application.Contracts.Roles.Commands.SetInheritable;
+using Sergin.Administration.UserAccess.Domain.Roles;
 
 namespace Sergin.Administration.UserAccess.Presentation.WebApi.Roles.Endpoints.SetInheritable;
 
@@ -13,7 +14,7 @@ internal class SetRoleInheritableEndpoint : IEndpoint
         routeBuilder.MapPut("/roles/{roleId:guid}/inheritable", async (
             [FromRoute] Guid roleId, [FromBody] SetRoleInheritableModel role, ISender sender) =>
         {
-            ErrorOr<SetRoleInheritableCommandResponse> res = await sender.Send(new SetRoleInheritableCommand(roleId, role.IsInheritable));
+            ErrorOr<SetRoleInheritableCommandResponse> res = await sender.Send(new SetRoleInheritableCommand(new RoleId(roleId), role.IsInheritable));
 
             return res.ToApiResult();
         });

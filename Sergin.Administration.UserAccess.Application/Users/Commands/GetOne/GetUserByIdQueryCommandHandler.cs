@@ -1,4 +1,3 @@
-using Sergin.Administration.UserAccess.Domain.Users;
 using Sergin.SharedKernel.Application.Commands.Queries;
 
 namespace Sergin.Administration.UserAccess.Application.Users.Commands.GetOne;
@@ -7,7 +6,7 @@ internal sealed class GetUserByIdQueryCommandHandler(IGetUserQueryRepository rep
 {
     public async Task<ErrorOr<UserQueryResponse>> Handle(GetUserByIdQueryCommand request, CancellationToken cancellationToken)
     {
-        UserQueryResponse? res = await repository.GetUserById(new UserInternalId(request.Id), cancellationToken);
+        UserQueryResponse? res = await repository.GetUserById(request.Id, cancellationToken);
 
         if (res is null)
         {

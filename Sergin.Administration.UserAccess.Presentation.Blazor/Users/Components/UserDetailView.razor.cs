@@ -6,6 +6,7 @@ using Sergin.Administration.UserAccess.Application.Configurations.Users;
 using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.DeactivateUser;
 using Sergin.Administration.UserAccess.Application.Contracts.Users.Commands.GetOne;
 using Sergin.Administration.UserAccess.Presentation.Blazor.Users.Assignments.Components;
+using Sergin.Administration.UserAccess.Domain.Users;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Users.Components;
 
@@ -51,7 +52,7 @@ public sealed partial class UserDetailView
 
     private async Task LoadAsync()
     {
-        ErrorOr<UserQueryResponse> result = await Dispatcher.SendAsync(new GetUserByIdQueryCommand(Id));
+        ErrorOr<UserQueryResponse> result = await Dispatcher.SendAsync(new GetUserByIdQueryCommand(new UserInternalId(Id)));
 
         if (result.IsError)
         {
@@ -85,7 +86,7 @@ public sealed partial class UserDetailView
 
         deactivating = true;
 
-        ErrorOr<DeactivateUserCommandResponse> result = await Dispatcher.SendAsync(new DeactivateUserCommand(Id));
+        ErrorOr<DeactivateUserCommandResponse> result = await Dispatcher.SendAsync(new DeactivateUserCommand(new UserInternalId(Id)));
 
         deactivating = false;
 

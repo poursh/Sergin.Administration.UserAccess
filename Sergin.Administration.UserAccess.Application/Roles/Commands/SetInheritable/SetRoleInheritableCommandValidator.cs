@@ -9,13 +9,13 @@ internal sealed class SetRoleInheritableCommandValidator : AbstractValidator<Set
 {
     public SetRoleInheritableCommandValidator(IRoleQueryRepository roles)
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id.Value).NotEmpty().OverridePropertyName(nameof(SetRoleInheritableCommand.Id));
 
         // BR-2 holds for existing assignments too: a role assigned below its owner must stay inheritable.
         RuleFor(x => x.IsInheritable)
             .MustAsync(async (command, _, cancellationToken) =>
-                !await roles.HasLiveAssignmentsAwayFromOwnerAsync(command.Id, cancellationToken))
+                !await roles.HasLiveAssignmentsAwayFromOwnerAsync(command.Id.Value, cancellationToken))
             .WithMessage(_ => ValidationTexts.Template(RoleTexts.AssignedBelowOwner))
-            .When(x => !x.IsInheritable && x.Id != Guid.Empty);
+            .When(x => !x.IsInheritable && x.Id.Value != Guid.Empty);
     }
 }

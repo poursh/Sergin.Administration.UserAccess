@@ -17,7 +17,7 @@ internal sealed class GrantRolePermissionCommandHandler(
 {
     public async Task<ErrorOr<GrantRolePermissionCommandResponse>> Handle(GrantRolePermissionCommand request, CancellationToken cancellationToken)
     {
-        Role? role = await roles.GetAsync(new RoleId(request.Id), cancellationToken);
+        Role? role = await roles.GetAsync(request.Id, cancellationToken);
 
         if (role is null)
         {

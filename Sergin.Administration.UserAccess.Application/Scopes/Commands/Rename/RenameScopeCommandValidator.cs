@@ -8,7 +8,7 @@ internal sealed class RenameScopeCommandValidator : AbstractValidator<RenameScop
 {
     public RenameScopeCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id.Value).NotEmpty().OverridePropertyName(nameof(RenameScopeCommand.Id));
 
         RuleFor(x => x.Name.Value)
             .NotEmpty()

@@ -22,7 +22,7 @@ internal sealed class DeleteRoleCommandHandler(
 {
     public async Task<ErrorOr<Deleted>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
     {
-        Role? role = await roles.GetAsync(new RoleId(request.Id), cancellationToken);
+        Role? role = await roles.GetAsync(request.Id, cancellationToken);
 
         if (role is null)
         {
@@ -36,7 +36,7 @@ internal sealed class DeleteRoleCommandHandler(
 
         if (request.Cascade)
         {
-            foreach (User user in await users.GetWithLiveAssignmentsOfRoleAsync(request.Id, cancellationToken))
+            foreach (User user in await users.GetWithLiveAssignmentsOfRoleAsync(request.Id.Value, cancellationToken))
             {
                 foreach (RoleAssignment assignment in user.Assignments.Where(a => a.RoleId == role.Id && !a.IsRevoked).ToList())
                 {

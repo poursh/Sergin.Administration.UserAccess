@@ -17,4 +17,4 @@ public sealed record ProvisionExternalUserCommand(
     UserName UserName,
     EmailAddress? Email,
     string FirstName,
-    string LastName) : ICommand<ProvisionExternalUserCommandResponse>;
+    string LastName) : ICommand<ProvisionExternalUserCommandResponse>, ISystemCommand;

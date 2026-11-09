@@ -27,7 +27,7 @@ internal sealed class AssignRoleCommandHandler(
             return Error.Forbidden();
         }
 
-        User? user = await users.GetWithAssignmentsAsync(new UserInternalId(request.UserId), cancellationToken);
+        User? user = await users.GetWithAssignmentsAsync(request.RootId, cancellationToken);
         Role? role = await roles.GetAsync(new RoleId(request.RoleId), cancellationToken);
         Scope? scope = await scopes.GetAsync(new ScopeId(request.ScopeId), cancellationToken);
 

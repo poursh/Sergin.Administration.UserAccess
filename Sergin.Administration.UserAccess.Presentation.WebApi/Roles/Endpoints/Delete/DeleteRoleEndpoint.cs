@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sergin.SharedKernel.Presentation.WebApi.Endpoints.Results;
 using Sergin.Administration.UserAccess.Application.Contracts.Roles.Commands.Delete;
+using Sergin.Administration.UserAccess.Domain.Roles;
 
 namespace Sergin.Administration.UserAccess.Presentation.WebApi.Roles.Endpoints.Delete;
 
@@ -13,7 +14,7 @@ internal class DeleteRoleEndpoint : IEndpoint
         routeBuilder.MapDelete("/roles/{roleId:guid}", async (
             [FromRoute] Guid roleId, [FromQuery] bool? cascade, ISender sender) =>
         {
-            ErrorOr<Deleted> res = await sender.Send(new DeleteRoleCommand(roleId, cascade ?? false));
+            ErrorOr<Deleted> res = await sender.Send(new DeleteRoleCommand(new RoleId(roleId), cascade ?? false));
 
             return res.ToApiResult();
         });

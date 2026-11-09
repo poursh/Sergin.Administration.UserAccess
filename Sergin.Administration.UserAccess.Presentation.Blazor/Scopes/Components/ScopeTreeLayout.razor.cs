@@ -3,6 +3,7 @@ using MudBlazor;
 using Sergin.Administration.UserAccess.Application.Configurations.Scopes;
 using Sergin.Administration.UserAccess.Application.Contracts.Scopes.Commands.Delete;
 using Sergin.Administration.UserAccess.Application.Contracts.Scopes.Commands.GetTree;
+using Sergin.Administration.UserAccess.Domain.Scopes;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Scopes.Components;
 
@@ -36,5 +37,5 @@ public sealed partial class ScopeTreeLayout
     private Task<ErrorOr<IReadOnlyCollection<ScopeTreeItem>>> LoadAsync() => Dispatcher.SendAsync(new GetScopeTreeQueryCommand());
 
     // A leaf only: the menu disables Delete on a scope with children, and the handler refuses one too.
-    private Task<ErrorOr<Deleted>> DeleteAsync(ScopeTreeItem scope) => Dispatcher.SendAsync(new DeleteScopeCommand(scope.Id, Cascade: false));
+    private Task<ErrorOr<Deleted>> DeleteAsync(ScopeTreeItem scope) => Dispatcher.SendAsync(new DeleteScopeCommand(new ScopeId(scope.Id), Cascade: false));
 }

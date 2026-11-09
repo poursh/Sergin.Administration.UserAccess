@@ -18,14 +18,14 @@ internal sealed class MoveScopeCommandHandler(
     public async Task<ErrorOr<MoveScopeCommandResponse>> Handle(MoveScopeCommand request, CancellationToken cancellationToken)
     {
         // Both ends: managing the subtree where it is, and where it is going.
-        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.Id, cancellationToken)
-            || !await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.NewParentId, cancellationToken))
+        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.Id.Value, cancellationToken)
+            || !await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.NewParentId.Value, cancellationToken))
         {
             return Error.Forbidden();
         }
 
-        Scope? scope = await scopes.GetAsync(new ScopeId(request.Id), cancellationToken);
-        Scope? newParent = await scopes.GetAsync(new ScopeId(request.NewParentId), cancellationToken);
+        Scope? scope = await scopes.GetAsync(request.Id, cancellationToken);
+        Scope? newParent = await scopes.GetAsync(request.NewParentId, cancellationToken);
 
         if (scope is null || newParent is null)
         {

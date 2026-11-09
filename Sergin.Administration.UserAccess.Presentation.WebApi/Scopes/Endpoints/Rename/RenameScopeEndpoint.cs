@@ -14,7 +14,7 @@ internal class RenameScopeEndpoint : IEndpoint
         routeBuilder.MapPut("/scopes/{scopeId:guid}/name", async (
             [FromRoute] Guid scopeId, [FromBody] RenameScopeModel scope, ISender sender) =>
         {
-            ErrorOr<RenameScopeCommandResponse> res = await sender.Send(new RenameScopeCommand(scopeId, new ScopeName(scope.Name)));
+            ErrorOr<RenameScopeCommandResponse> res = await sender.Send(new RenameScopeCommand(new ScopeId(scopeId), new ScopeName(scope.Name)));
 
             return res.ToApiResult();
         });

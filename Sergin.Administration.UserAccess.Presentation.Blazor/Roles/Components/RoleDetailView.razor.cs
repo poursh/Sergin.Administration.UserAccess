@@ -114,7 +114,7 @@ public sealed partial class RoleDetailView
 
     private async Task LoadAsync()
     {
-        ErrorOr<Versioned<RoleQueryResponse>> loaded = await Dispatcher.SendVersionedAsync(new GetRoleByIdQueryCommand(Id));
+        ErrorOr<Versioned<RoleQueryResponse>> loaded = await Dispatcher.SendVersionedAsync(new GetRoleByIdQueryCommand(new RoleId(Id)));
 
         if (loaded.IsError)
         {
@@ -131,7 +131,7 @@ public sealed partial class RoleDetailView
         model.Name = role.Name;
     }
 
-    private RenameRoleCommand ToRenameCommand() => new(Id, new RoleName(model.Name));
+    private RenameRoleCommand ToRenameCommand() => new(new RoleId(Id), new RoleName(model.Name));
 
     private async Task RenameAsync()
     {
@@ -143,12 +143,12 @@ public sealed partial class RoleDetailView
         }
     }
 
-    private Task SetInheritableAsync(bool isInheritable) => SendGuardedAsync(new SetRoleInheritableCommand(Id, isInheritable));
+    private Task SetInheritableAsync(bool isInheritable) => SendGuardedAsync(new SetRoleInheritableCommand(new RoleId(Id), isInheritable));
 
     private Task GrantAsync() =>
-        permissionToGrant is null ? Task.CompletedTask : SendGuardedAsync(new GrantRolePermissionCommand(Id, Permission.Create(permissionToGrant)));
+        permissionToGrant is null ? Task.CompletedTask : SendGuardedAsync(new GrantRolePermissionCommand(new RoleId(Id), Permission.Create(permissionToGrant)));
 
-    private Task RevokeAsync(string permission) => SendGuardedAsync(new RevokeRolePermissionCommand(Id, Permission.Create(permission)));
+    private Task RevokeAsync(string permission) => SendGuardedAsync(new RevokeRolePermissionCommand(new RoleId(Id), Permission.Create(permission)));
 
     // Every edit is sent at the version this view loaded; the view reloads afterwards either way, so a stale
     // answer leaves it showing the current role.
@@ -188,7 +188,7 @@ public sealed partial class RoleDetailView
         Guid ownerScopeId = role.OwnerScopeId;
 
         busy = true;
-        ErrorOr<Versioned<Deleted>> result = await Dispatcher.SendVersionedAsync(new DeleteRoleCommand(Id, cascade), expected);
+        ErrorOr<Versioned<Deleted>> result = await Dispatcher.SendVersionedAsync(new DeleteRoleCommand(new RoleId(Id), cascade), expected);
         busy = false;
 
         if (result.IsError)

@@ -90,7 +90,7 @@ public sealed partial class ScopeDetailView
 
     private async Task LoadAsync()
     {
-        ErrorOr<Versioned<ScopeQueryResponse>> loaded = await Dispatcher.SendVersionedAsync(new GetScopeByIdQueryCommand(Id));
+        ErrorOr<Versioned<ScopeQueryResponse>> loaded = await Dispatcher.SendVersionedAsync(new GetScopeByIdQueryCommand(new ScopeId(Id)));
 
         if (loaded.IsError)
         {
@@ -132,7 +132,7 @@ public sealed partial class ScopeDetailView
         return false;
     }
 
-    private RenameScopeCommand ToRenameCommand() => new(Id, new ScopeName(model.Name));
+    private RenameScopeCommand ToRenameCommand() => new(new ScopeId(Id), new ScopeName(model.Name));
 
     private async Task RenameAsync()
     {
@@ -163,7 +163,7 @@ public sealed partial class ScopeDetailView
     private async Task MoveAsync()
     {
         busy = true;
-        ErrorOr<MoveScopeCommandResponse> result = await Dispatcher.SendAsync(new MoveScopeCommand(Id, newParentId));
+        ErrorOr<MoveScopeCommandResponse> result = await Dispatcher.SendAsync(new MoveScopeCommand(new ScopeId(Id), new ScopeId(newParentId)));
         busy = false;
 
         if (result.IsError)
@@ -185,7 +185,7 @@ public sealed partial class ScopeDetailView
         }
 
         busy = true;
-        ErrorOr<Deleted> result = await Dispatcher.SendAsync(new DeleteScopeCommand(Id, cascade));
+        ErrorOr<Deleted> result = await Dispatcher.SendAsync(new DeleteScopeCommand(new ScopeId(Id), cascade));
         busy = false;
 
         if (result.IsError)

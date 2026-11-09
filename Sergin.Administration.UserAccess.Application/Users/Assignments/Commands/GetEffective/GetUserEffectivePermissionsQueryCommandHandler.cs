@@ -16,12 +16,12 @@ internal sealed class GetUserEffectivePermissionsQueryCommandHandler(
         GetUserEffectivePermissionsQueryCommand request, CancellationToken cancellationToken)
     {
         // A regional reader does not see the permissions of someone granted outside their region.
-        if (!await reach.CoversAsync(request.UserId, UserPermissions.Read, cancellationToken))
+        if (!await reach.CoversAsync(request.Id.Value, UserPermissions.Read, cancellationToken))
         {
             return Error.Forbidden();
         }
 
-        IReadOnlyCollection<EffectiveGrant> grants = await checker.GetActiveGrantsAsync(request.UserId, cancellationToken);
+        IReadOnlyCollection<EffectiveGrant> grants = await checker.GetActiveGrantsAsync(request.Id.Value, cancellationToken);
         IReadOnlyDictionary<Guid, string> names =
             await scopes.GetNamesAsync([.. grants.Select(grant => grant.ScopeId).Distinct()], cancellationToken);
 

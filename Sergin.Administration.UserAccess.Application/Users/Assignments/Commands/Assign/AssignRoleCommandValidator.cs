@@ -7,7 +7,7 @@ internal sealed class AssignRoleCommandValidator : AbstractValidator<AssignRoleC
 {
     public AssignRoleCommandValidator()
     {
-        RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.RootId.Value).NotEmpty().OverridePropertyName(nameof(AssignRoleCommand.RootId));
         RuleFor(x => x.RoleId).NotEmpty();
         RuleFor(x => x.ScopeId).NotEmpty();
 

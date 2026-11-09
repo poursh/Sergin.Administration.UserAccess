@@ -11,6 +11,8 @@ using Sergin.Administration.UserAccess.Application.Contracts.Users.Assignments.C
 using Sergin.Administration.UserAccess.Application.Contracts.Users.Assignments.Commands.Revoke;
 using Sergin.Administration.UserAccess.Presentation.Blazor.Roles;
 using Sergin.Administration.UserAccess.Presentation.Blazor.Users.Assignments.Models;
+using Sergin.Administration.UserAccess.Domain.Users;
+using Sergin.Administration.UserAccess.Domain.Users.Assignments;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Users.Assignments.Components;
 
@@ -68,8 +70,8 @@ public sealed partial class UserAssignmentsView
 
     private async Task LoadAsync()
     {
-        ErrorOr<IReadOnlyCollection<UserAssignmentItem>> listed = await Dispatcher.SendAsync(new GetUserAssignmentsQueryCommand(UserId));
-        ErrorOr<IReadOnlyCollection<EffectivePermissionItem>> held = await Dispatcher.SendAsync(new GetUserEffectivePermissionsQueryCommand(UserId));
+        ErrorOr<IReadOnlyCollection<UserAssignmentItem>> listed = await Dispatcher.SendAsync(new GetUserAssignmentsQueryCommand(new UserInternalId(UserId)));
+        ErrorOr<IReadOnlyCollection<EffectivePermissionItem>> held = await Dispatcher.SendAsync(new GetUserEffectivePermissionsQueryCommand(new UserInternalId(UserId)));
 
         assignments = listed.IsError ? [] : listed.Value;
         effective = held.IsError ? [] : held.Value;
@@ -98,7 +100,7 @@ public sealed partial class UserAssignmentsView
         busy = true;
 
         ErrorOr<AssignRoleCommandResponse> result = await Dispatcher.SendAsync(new AssignRoleCommand(
-            UserId,
+            new UserInternalId(UserId),
             model.RoleId,
             model.ScopeId,
             model.IncludeSubtree,
@@ -121,7 +123,7 @@ public sealed partial class UserAssignmentsView
     private async Task RevokeAsync(Guid assignmentId)
     {
         busy = true;
-        ErrorOr<RevokeAssignmentCommandResponse> result = await Dispatcher.SendAsync(new RevokeAssignmentCommand(UserId, assignmentId));
+        ErrorOr<RevokeAssignmentCommandResponse> result = await Dispatcher.SendAsync(new RevokeAssignmentCommand(new UserInternalId(UserId), new RoleAssignmentId(assignmentId)));
         busy = false;
 
         if (result.IsError)

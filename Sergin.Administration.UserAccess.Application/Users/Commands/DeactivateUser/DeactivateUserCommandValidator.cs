@@ -6,6 +6,6 @@ internal sealed class DeactivateUserCommandValidator : AbstractValidator<Deactiv
 {
     public DeactivateUserCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id.Value).NotEmpty().OverridePropertyName(nameof(DeactivateUserCommand.Id));
     }
 }

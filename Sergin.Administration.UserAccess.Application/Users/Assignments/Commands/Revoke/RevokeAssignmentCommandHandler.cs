@@ -20,9 +20,8 @@ internal sealed class RevokeAssignmentCommandHandler(
 {
     public async Task<ErrorOr<RevokeAssignmentCommandResponse>> Handle(RevokeAssignmentCommand request, CancellationToken cancellationToken)
     {
-        User? user = await users.GetWithAssignmentsAsync(new UserInternalId(request.UserId), cancellationToken);
-        var assignmentId = new RoleAssignmentId(request.AssignmentId);
-        RoleAssignment? assignment = user?.Assignments.FirstOrDefault(a => a.Id == assignmentId);
+        User? user = await users.GetWithAssignmentsAsync(request.RootId, cancellationToken);
+        RoleAssignment? assignment = user?.Assignments.FirstOrDefault(a => a.Id == request.Id);
 
         if (user is null || assignment is null)
         {
@@ -34,7 +33,7 @@ internal sealed class RevokeAssignmentCommandHandler(
             return Error.Forbidden();
         }
 
-        ErrorOr<Success> revoked = user.RevokeAssignment(assignmentId, clock.UtcNow, userContext.Id.Value);
+        ErrorOr<Success> revoked = user.RevokeAssignment(request.Id, clock.UtcNow, userContext.Id.Value);
 
         if (revoked.IsError)
         {
@@ -45,6 +44,6 @@ internal sealed class RevokeAssignmentCommandHandler(
         await unitOfWork.SaveChangesAsync(cancellationToken);
         cache.Invalidate();
 
-        return new RevokeAssignmentCommandResponse(request.AssignmentId);
+        return new RevokeAssignmentCommandResponse(request.Id.Value);
     }
 }

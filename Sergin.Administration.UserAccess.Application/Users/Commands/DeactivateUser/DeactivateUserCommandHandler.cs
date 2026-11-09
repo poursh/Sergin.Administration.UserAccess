@@ -14,7 +14,7 @@ internal sealed class DeactivateUserCommandHandler(
     public async Task<ErrorOr<DeactivateUserCommandResponse>> Handle(
         DeactivateUserCommand request, CancellationToken cancellationToken)
     {
-        User? user = await repository.GetAsync(new UserInternalId(request.Id), cancellationToken);
+        User? user = await repository.GetAsync(request.Id, cancellationToken);
 
         if (user is null)
         {

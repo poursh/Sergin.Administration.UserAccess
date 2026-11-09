@@ -14,7 +14,7 @@ internal class RenameRoleEndpoint : IEndpoint
         routeBuilder.MapPut("/roles/{roleId:guid}/name", async (
             [FromRoute] Guid roleId, [FromBody] RenameRoleModel role, ISender sender) =>
         {
-            ErrorOr<RenameRoleCommandResponse> res = await sender.Send(new RenameRoleCommand(roleId, new RoleName(role.Name)));
+            ErrorOr<RenameRoleCommandResponse> res = await sender.Send(new RenameRoleCommand(new RoleId(roleId), new RoleName(role.Name)));
 
             return res.ToApiResult();
         });

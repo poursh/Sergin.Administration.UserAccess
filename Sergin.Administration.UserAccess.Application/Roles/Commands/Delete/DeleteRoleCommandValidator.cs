@@ -9,12 +9,12 @@ internal sealed class DeleteRoleCommandValidator : AbstractValidator<DeleteRoleC
 {
     public DeleteRoleCommandValidator(IRoleQueryRepository roles)
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id.Value).NotEmpty().OverridePropertyName(nameof(DeleteRoleCommand.Id));
 
         // BR-5: a role in use is deleted only with an explicit cascade, which revokes its assignments.
         RuleFor(x => x.Cascade)
-            .MustAsync(async (command, _, cancellationToken) => !await roles.HasLiveAssignmentsAsync(command.Id, cancellationToken))
+            .MustAsync(async (command, _, cancellationToken) => !await roles.HasLiveAssignmentsAsync(command.Id.Value, cancellationToken))
             .WithMessage(_ => ValidationTexts.Template(RoleTexts.InUse))
-            .When(x => !x.Cascade && x.Id != Guid.Empty);
+            .When(x => !x.Cascade && x.Id.Value != Guid.Empty);
     }
 }
