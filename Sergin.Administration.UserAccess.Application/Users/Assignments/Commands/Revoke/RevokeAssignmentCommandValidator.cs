@@ -7,7 +7,7 @@ internal sealed class RevokeAssignmentCommandValidator : AbstractValidator<Revok
 {
     public RevokeAssignmentCommandValidator()
     {
-        RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.AssignmentId).NotEmpty();
+        RuleFor(x => x.RootId.Value).NotEmpty().OverridePropertyName(nameof(RevokeAssignmentCommand.RootId));
+        RuleFor(x => x.Id.Value).NotEmpty().OverridePropertyName(nameof(RevokeAssignmentCommand.Id));
     }
 }

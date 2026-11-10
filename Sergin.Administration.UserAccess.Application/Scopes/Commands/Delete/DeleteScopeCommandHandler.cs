@@ -24,12 +24,12 @@ internal sealed class DeleteScopeCommandHandler(
 {
     public async Task<ErrorOr<Deleted>> Handle(DeleteScopeCommand request, CancellationToken cancellationToken)
     {
-        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.Id, cancellationToken))
+        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.Id.Value, cancellationToken))
         {
             return Error.Forbidden();
         }
 
-        Scope? scope = await scopes.GetAsync(new ScopeId(request.Id), cancellationToken);
+        Scope? scope = await scopes.GetAsync(request.Id, cancellationToken);
 
         if (scope is null)
         {
@@ -40,7 +40,7 @@ internal sealed class DeleteScopeCommandHandler(
         // or the caller chose the cascade (BR-5).
         if (request.Cascade)
         {
-            foreach (User user in await users.GetWithLiveAssignmentsAtScopeAsync(request.Id, cancellationToken))
+            foreach (User user in await users.GetWithLiveAssignmentsAtScopeAsync(request.Id.Value, cancellationToken))
             {
                 foreach (RoleAssignment assignment in user.Assignments.Where(a => a.ScopeId == scope.Id && !a.IsRevoked).ToList())
                 {

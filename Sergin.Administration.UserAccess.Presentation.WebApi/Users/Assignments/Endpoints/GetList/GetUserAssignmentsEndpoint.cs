@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sergin.SharedKernel.Presentation.WebApi.Endpoints.Results;
 using Sergin.Administration.UserAccess.Application.Contracts.Users.Assignments.Commands.GetList;
+using Sergin.Administration.UserAccess.Domain.Users;
 
 namespace Sergin.Administration.UserAccess.Presentation.WebApi.Users.Assignments.Endpoints.GetList;
 
@@ -14,7 +15,7 @@ internal class GetUserAssignmentsEndpoint : IEndpoint
         routeBuilder
             .MapGet("/users/{userId:guid}/assignments", async ([FromRoute] Guid userId, ISender sender) =>
             {
-                ErrorOr<IReadOnlyCollection<UserAssignmentItem>> res = await sender.Send(new GetUserAssignmentsQueryCommand(userId));
+                ErrorOr<IReadOnlyCollection<UserAssignmentItem>> res = await sender.Send(new GetUserAssignmentsQueryCommand(new UserInternalId(userId)));
 
                 return res.ToApiResult();
             })

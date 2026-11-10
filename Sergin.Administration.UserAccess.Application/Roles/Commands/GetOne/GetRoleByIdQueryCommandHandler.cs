@@ -12,7 +12,7 @@ internal sealed class GetRoleByIdQueryCommandHandler(
     public override async Task<ErrorOr<Versioned<RoleQueryResponse>>> HandleVersioned(
         GetRoleByIdQueryCommand request, CancellationToken cancellationToken)
     {
-        Versioned<RoleQueryResponse>? role = await repository.GetRoleById(request.Id, cancellationToken);
+        Versioned<RoleQueryResponse>? role = await repository.GetRoleById(request.Id.Value, cancellationToken);
 
         if (role is null)
         {

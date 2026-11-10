@@ -15,12 +15,12 @@ internal sealed class CreateScopeCommandHandler(
 {
     public async Task<ErrorOr<CreateScopeCommandResponse>> Handle(CreateScopeCommand request, CancellationToken cancellationToken)
     {
-        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.ParentId, cancellationToken))
+        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.ParentId.Value, cancellationToken))
         {
             return Error.Forbidden();
         }
 
-        Scope? parent = await scopes.GetAsync(new ScopeId(request.ParentId), cancellationToken);
+        Scope? parent = await scopes.GetAsync(request.ParentId, cancellationToken);
 
         if (parent is null)
         {

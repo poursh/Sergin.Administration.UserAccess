@@ -46,7 +46,7 @@ public sealed partial class ScopeCreateView
     protected override void OnInitialized() => validation = FormValidator.RulesFor(ToCommand);
 
     // One mapping for both the field-by-field validation and the submit, so the two cannot drift.
-    private CreateScopeCommand ToCommand() => new(ParentId, new ScopeName(model.Name));
+    private CreateScopeCommand ToCommand() => new(new ScopeId(ParentId), new ScopeName(model.Name));
 
     private async Task SubmitAsync()
     {

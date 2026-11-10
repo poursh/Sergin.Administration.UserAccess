@@ -15,7 +15,7 @@ internal sealed class SetRoleInheritableCommandHandler(
 {
     public async Task<ErrorOr<SetRoleInheritableCommandResponse>> Handle(SetRoleInheritableCommand request, CancellationToken cancellationToken)
     {
-        Role? role = await roles.GetAsync(new RoleId(request.Id), cancellationToken);
+        Role? role = await roles.GetAsync(request.Id, cancellationToken);
 
         if (role is null)
         {

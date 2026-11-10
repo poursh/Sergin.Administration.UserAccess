@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sergin.SharedKernel.Presentation.WebApi.Endpoints.Results;
 using Sergin.Administration.UserAccess.Application.Contracts.Users.Assignments.Commands.Assign;
+using Sergin.Administration.UserAccess.Domain.Users;
 
 namespace Sergin.Administration.UserAccess.Presentation.WebApi.Users.Assignments.Endpoints.Assign;
 
@@ -16,7 +17,7 @@ internal class AssignRoleEndpoint : IEndpoint
                 [FromRoute] Guid userId, [FromBody] NewAssignmentModel assignment, ISender sender) =>
             {
                 ErrorOr<AssignRoleCommandResponse> res = await sender.Send(new AssignRoleCommand(
-                    userId,
+                    new UserInternalId(userId),
                     assignment.RoleId,
                     assignment.ScopeId,
                     assignment.IncludeSubtree,

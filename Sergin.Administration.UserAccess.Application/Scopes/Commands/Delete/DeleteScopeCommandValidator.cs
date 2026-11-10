@@ -10,21 +10,22 @@ internal sealed class DeleteScopeCommandValidator : AbstractValidator<DeleteScop
 {
     public DeleteScopeCommandValidator(IScopeRepository scopes, IScopeQueryRepository scopeQueries)
     {
-        RuleFor(x => x.Id)
+        RuleFor(x => x.Id.Value)
             .NotEmpty()
-            .NotEqual(Scope.RootId.Value).WithMessage(_ => ValidationTexts.Template(ScopeTexts.RootCannotDelete));
+            .NotEqual(Scope.RootId.Value).WithMessage(_ => ValidationTexts.Template(ScopeTexts.RootCannotDelete))
+            .OverridePropertyName(nameof(DeleteScopeCommand.Id));
 
         RuleFor(x => x.Id)
-            .MustAsync(async (id, cancellationToken) => !await scopes.HasChildrenAsync(new ScopeId(id), cancellationToken))
+            .MustAsync(async (id, cancellationToken) => !await scopes.HasChildrenAsync(id, cancellationToken))
             .WithMessage(_ => ValidationTexts.Template(ScopeTexts.HasChildren))
-            .When(x => x.Id != Guid.Empty);
+            .When(x => x.Id.Value != Guid.Empty);
 
         // BR-5: in use means live assignments at it or live roles owned by it; only an explicit cascade proceeds.
         RuleFor(x => x.Cascade)
             .MustAsync(async (command, _, cancellationToken) =>
-                !await scopeQueries.HasLiveAssignmentsAsync(command.Id, cancellationToken)
-                && !await scopeQueries.OwnsLiveRolesAsync(command.Id, cancellationToken))
+                !await scopeQueries.HasLiveAssignmentsAsync(command.Id.Value, cancellationToken)
+                && !await scopeQueries.OwnsLiveRolesAsync(command.Id.Value, cancellationToken))
             .WithMessage(_ => ValidationTexts.Template(ScopeTexts.InUse))
-            .When(x => !x.Cascade && x.Id != Guid.Empty);
+            .When(x => !x.Cascade && x.Id.Value != Guid.Empty);
     }
 }

@@ -13,12 +13,12 @@ internal sealed class RenameScopeCommandHandler(
 {
     public async Task<ErrorOr<RenameScopeCommandResponse>> Handle(RenameScopeCommand request, CancellationToken cancellationToken)
     {
-        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.Id, cancellationToken))
+        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Manage, request.Id.Value, cancellationToken))
         {
             return Error.Forbidden();
         }
 
-        Scope? scope = await scopes.GetAsync(new ScopeId(request.Id), cancellationToken);
+        Scope? scope = await scopes.GetAsync(request.Id, cancellationToken);
 
         if (scope is null)
         {

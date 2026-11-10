@@ -12,12 +12,12 @@ internal sealed class GetScopeByIdQueryCommandHandler(
     public override async Task<ErrorOr<Versioned<ScopeQueryResponse>>> HandleVersioned(
         GetScopeByIdQueryCommand request, CancellationToken cancellationToken)
     {
-        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Read, request.Id, cancellationToken))
+        if (!await authorization.CurrentUserHasAsync(ScopePermissions.Read, request.Id.Value, cancellationToken))
         {
             return Error.Forbidden();
         }
 
-        Versioned<ScopeQueryResponse>? scope = await repository.GetScopeById(request.Id, cancellationToken);
+        Versioned<ScopeQueryResponse>? scope = await repository.GetScopeById(request.Id.Value, cancellationToken);
 
         return scope is null ? Error.NotFound() : scope;
     }

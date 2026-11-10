@@ -10,7 +10,7 @@ internal sealed class CreateScopeCommandValidator : AbstractValidator<CreateScop
 {
     public CreateScopeCommandValidator(IScopeQueryRepository scopes)
     {
-        RuleFor(x => x.ParentId).NotEmpty();
+        RuleFor(x => x.ParentId.Value).NotEmpty().OverridePropertyName(nameof(CreateScopeCommand.ParentId));
 
         RuleFor(x => x.Name.Value)
             .NotEmpty()
@@ -20,9 +20,9 @@ internal sealed class CreateScopeCommandValidator : AbstractValidator<CreateScop
         // Advisory: ix_scopes_parent_id_name is the guarantee under a race.
         RuleFor(x => x.Name)
             .MustAsync((command, name, cancellationToken) =>
-                NotTakenAsync(scopes, command.ParentId, name.Value, cancellationToken))
+                NotTakenAsync(scopes, command.ParentId.Value, name.Value, cancellationToken))
             .WithMessage(_ => ValidationTexts.Template(CommonValidationTexts.MustBeUniqueIn))
-            .When(x => x.ParentId != Guid.Empty && !string.IsNullOrWhiteSpace(x.Name.Value));
+            .When(x => x.ParentId.Value != Guid.Empty && !string.IsNullOrWhiteSpace(x.Name.Value));
     }
 
     private static async Task<bool> NotTakenAsync(IScopeQueryRepository scopes, Guid parentId, string name, CancellationToken cancellationToken) =>

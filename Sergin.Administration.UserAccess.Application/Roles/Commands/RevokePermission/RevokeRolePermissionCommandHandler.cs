@@ -15,7 +15,7 @@ internal sealed class RevokeRolePermissionCommandHandler(
 {
     public async Task<ErrorOr<RevokeRolePermissionCommandResponse>> Handle(RevokeRolePermissionCommand request, CancellationToken cancellationToken)
     {
-        Role? role = await roles.GetAsync(new RoleId(request.Id), cancellationToken);
+        Role? role = await roles.GetAsync(request.Id, cancellationToken);
 
         if (role is null)
         {

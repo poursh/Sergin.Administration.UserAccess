@@ -10,7 +10,7 @@ internal sealed class GrantRolePermissionCommandValidator : AbstractValidator<Gr
 {
     public GrantRolePermissionCommandValidator(PermissionCatalog catalog)
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Id.Value).NotEmpty().OverridePropertyName(nameof(GrantRolePermissionCommand.Id));
         RuleFor(x => x.Permission).NotNull();
 
         // Advisory like the other repository rules: the catalogue is what the platform defines today. Revoke

@@ -16,7 +16,7 @@ internal class CreateScopeEndpoint : IEndpoint
             .MapPost("/scopes", async ([FromBody] NewScopeModel scope, ISender sender) =>
             {
                 ErrorOr<CreateScopeCommandResponse> res = await sender.Send(
-                    new CreateScopeCommand(scope.ParentId, new ScopeName(scope.Name)));
+                    new CreateScopeCommand(new ScopeId(scope.ParentId), new ScopeName(scope.Name)));
 
                 return res.ToApiResult();
             })

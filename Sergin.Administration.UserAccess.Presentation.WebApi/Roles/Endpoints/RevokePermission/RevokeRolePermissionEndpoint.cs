@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using Sergin.SharedKernel.Presentation.WebApi.Endpoints.Results;
 using Sergin.Administration.UserAccess.Application.Contracts.Roles.Commands.RevokePermission;
 using Sergin.SharedKernel.Domain.Securities;
+using Sergin.Administration.UserAccess.Domain.Roles;
 
 namespace Sergin.Administration.UserAccess.Presentation.WebApi.Roles.Endpoints.RevokePermission;
 
@@ -23,7 +24,7 @@ internal class RevokeRolePermissionEndpoint : IEndpoint
                 });
             }
 
-            ErrorOr<RevokeRolePermissionCommandResponse> res = await sender.Send(new RevokeRolePermissionCommand(roleId, parsed));
+            ErrorOr<RevokeRolePermissionCommandResponse> res = await sender.Send(new RevokeRolePermissionCommand(new RoleId(roleId), parsed));
 
             return res.ToApiResult();
         });

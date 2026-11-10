@@ -11,11 +11,11 @@ internal sealed class GetUserAssignmentsQueryCommandHandler(IUserAssignmentQuery
         GetUserAssignmentsQueryCommand request, CancellationToken cancellationToken)
     {
         // A regional reader does not see the grants of someone granted outside their region.
-        if (!await reach.CoversAsync(request.UserId, UserPermissions.Read, cancellationToken))
+        if (!await reach.CoversAsync(request.RootId.Value, UserPermissions.Read, cancellationToken))
         {
             return Error.Forbidden();
         }
 
-        return (await repository.GetUserAssignmentsAsync(request.UserId, cancellationToken)).ToErrorOr();
+        return (await repository.GetUserAssignmentsAsync(request.RootId.Value, cancellationToken)).ToErrorOr();
     }
 }
