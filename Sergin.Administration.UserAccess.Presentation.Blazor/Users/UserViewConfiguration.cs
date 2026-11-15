@@ -13,6 +13,9 @@ namespace Sergin.Administration.UserAccess.Presentation.Blazor.Users;
 /// </summary>
 internal sealed class UserViewConfiguration : IAggregateViewConfiguration<User>
 {
+    // After UserName, whose place is its declaration index (1).
+    private const int IdentifierOrder = 2;
+
     public void Configure(AggregateViewBuilder<User> view)
     {
         view.Title(UserUiTexts.Title)
@@ -25,8 +28,11 @@ internal sealed class UserViewConfiguration : IAggregateViewConfiguration<User>
             .Kind(SerginActionKind.Danger)
             .Confirm(UserUiTexts.DeactivateTitle, UserUiTexts.DeactivateConfirm, UserUiTexts.Deactivate);
 
-        view.Detail<UserQueryResponse>(detail => detail.Field(x => x.Id).Shown().Label(UserUiTexts.Identifier));
-        view.List<GetUserListItem>(list => list.Field(x => x.Id).Shown().Label(UserUiTexts.Identifier));
+        // The name first (the list's link), then the id: the order the responses declare them in is the other way round.
+        view.Detail<UserQueryResponse>(detail =>
+            detail.Title(x => x.UserName).Field(x => x.Id).Shown().Label(UserUiTexts.Identifier).Order(IdentifierOrder));
+        view.List<GetUserListItem>(list =>
+            list.Title(x => x.UserName).Field(x => x.Id).Shown().Label(UserUiTexts.Identifier).Order(IdentifierOrder));
         view.Form<CreateUserCommand>(form => form.Title(UserUiTexts.New));
 
         view.Child<RoleAssignment>(child => child.Named(AssignmentTexts.Singular).Section<UserAssignmentsSection>());
