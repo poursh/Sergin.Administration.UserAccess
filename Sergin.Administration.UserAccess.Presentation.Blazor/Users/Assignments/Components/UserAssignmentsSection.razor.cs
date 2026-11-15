@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Sergin.SharedKernel.Application.Securities.Authorization;
+using Sergin.SharedKernel.Presentation.Blazor.Aggregates;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
 using Sergin.SharedKernel.Presentation.Localizations;
 using Sergin.Administration.UserAccess.Application.Configurations.Users.Assignments;
@@ -18,9 +19,11 @@ namespace Sergin.Administration.UserAccess.Presentation.Blazor.Users.Assignments
 
 /// <summary>
 /// A user's assignments (FR-6, FR-12), the assign form (FR-7, FR-8, FR-10) and what they add up to (FR-11), as two
-/// sections embedded in <c>UserDetailView</c>.
+/// sections the generated user detail view draws in place of a generated child section (<c>UserViewConfiguration</c>).
+/// It reads them again when the view's generation moves (the header's Reload, a Deactivate) and after its own assign
+/// and revoke.
 /// </summary>
-public sealed partial class UserAssignmentsView
+public sealed partial class UserAssignmentsSection
 {
     private NewAssignmentFormModel model = new();
 
@@ -29,9 +32,12 @@ public sealed partial class UserAssignmentsView
     private IReadOnlyCollection<ScopeTreeItem> scopes = [];
     private IReadOnlyCollection<AssignableRoleItem> roles = [];
     private bool busy;
+    private Guid loadedUser;
+    private int loadedGeneration;
 
+    /// <summary>The user detail view's context: the user's id is its one target, and its generation says when to read again.</summary>
     [Parameter]
-    public Guid UserId { get; set; }
+    public AggregateViewContext Context { get; set; } = default!;
 
     [Inject]
     private ISerginDispatcher Dispatcher { get; set; } = default!;
@@ -51,27 +57,35 @@ public sealed partial class UserAssignmentsView
     // Both date pickers say the same: a period may stay open at either end.
     private string OptionalHint => Localizer.Text(AssignmentTexts.ValidFromUtc.Hint!);
 
+    // The record's id: the view's only target.
+    private Guid UserId => Context.TargetIds[0];
+
+    // Every render of the detail view hands a new context; only a new user or a new generation reads again.
     protected override async Task OnParametersSetAsync()
     {
-        ErrorOr<IReadOnlyCollection<ScopeTreeItem>> tree = await Dispatcher.SendAsync(new GetScopeTreeQueryCommand());
-        scopes = tree.IsError ? [] : [.. tree.Value.OrderBy(scope => scope.Depth).ThenBy(scope => scope.Name, StringComparer.CurrentCulture)];
+        if (UserId == loadedUser && Context.Generation == loadedGeneration)
+        {
+            return;
+        }
+
+        bool newUser = UserId != loadedUser;
+        loadedUser = UserId;
+        loadedGeneration = Context.Generation;
+
+        if (newUser)
+        {
+            ErrorOr<IReadOnlyCollection<ScopeTreeItem>> tree = await Dispatcher.SendAsync(new GetScopeTreeQueryCommand());
+            scopes = tree.IsError ? [] : [.. tree.Value.OrderBy(scope => scope.Depth).ThenBy(scope => scope.Name, StringComparer.CurrentCulture)];
+        }
 
         await LoadAsync();
-    }
-
-    /// <summary>Reads the assignments and effective permissions again; the detail view's reload calls it.</summary>
-    public async Task ReloadAsync()
-    {
-        await LoadAsync();
-
-        // Called from the parent's event, which re-renders the parent only: the user id did not change.
-        StateHasChanged();
     }
 
     private async Task LoadAsync()
     {
-        ErrorOr<IReadOnlyCollection<UserAssignmentItem>> listed = await Dispatcher.SendAsync(new GetUserAssignmentsQueryCommand(new UserInternalId(UserId)));
-        ErrorOr<IReadOnlyCollection<EffectivePermissionItem>> held = await Dispatcher.SendAsync(new GetUserEffectivePermissionsQueryCommand(new UserInternalId(UserId)));
+        var user = new UserInternalId(UserId);
+        ErrorOr<IReadOnlyCollection<UserAssignmentItem>> listed = await Dispatcher.SendAsync(new GetUserAssignmentsQueryCommand(user));
+        ErrorOr<IReadOnlyCollection<EffectivePermissionItem>> held = await Dispatcher.SendAsync(new GetUserEffectivePermissionsQueryCommand(user));
 
         assignments = listed.IsError ? [] : listed.Value;
         effective = held.IsError ? [] : held.Value;
