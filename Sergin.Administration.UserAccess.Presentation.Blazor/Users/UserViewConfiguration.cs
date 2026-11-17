@@ -9,7 +9,7 @@ namespace Sergin.Administration.UserAccess.Presentation.Blazor.Users;
 
 /// <summary>
 /// The user's generated views: its routes and titles, the identifier shown on the list and the detail (an id is hidden
-/// by default), a Deactivate that asks first, and the assignments drawn by their own section component.
+/// by default), a Deactivate that asks first and is offered only to an active user, and the assignments drawn by their own section component.
 /// </summary>
 internal sealed class UserViewConfiguration : IAggregateViewConfiguration<User>
 {
@@ -26,7 +26,8 @@ internal sealed class UserViewConfiguration : IAggregateViewConfiguration<User>
             .Label(UserUiTexts.Deactivate)
             .Icon(Icons.Material.Outlined.PersonOff)
             .Kind(SerginActionKind.Danger)
-            .Confirm(UserUiTexts.DeactivateTitle, UserUiTexts.DeactivateConfirm, UserUiTexts.Deactivate);
+            .Confirm(UserUiTexts.DeactivateTitle, UserUiTexts.DeactivateConfirm, UserUiTexts.Deactivate)
+            .AppliesWhen<UserQueryResponse>(user => user.IsActive);
 
         // The name first (the list's link), then the id: the order the responses declare them in is the other way round.
         view.Detail<UserQueryResponse>(detail =>
