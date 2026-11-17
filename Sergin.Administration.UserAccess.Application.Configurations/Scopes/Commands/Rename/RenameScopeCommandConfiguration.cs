@@ -3,12 +3,10 @@ using Sergin.Administration.UserAccess.Application.Contracts.Scopes.Commands.Ren
 
 namespace Sergin.Administration.UserAccess.Application.Configurations.Scopes.Commands.Rename;
 
-// No RequirePermissions: the permission is checked against the target scope in the handler, which is the
-// record's own scope rather than the scope the caller is working in.
+// Requires Manage: Scope is not Scoped(), so the pipeline checks it on any scope, and the handler still checks it on
+// the target scope.
 internal sealed class RenameScopeCommandConfiguration : ICommandConfiguration<RenameScopeCommand>
 {
-    public void Configure(CommandConfigurationBuilder<RenameScopeCommand> builder)
-    {
-        // Its root and its expected version come from the record's type; nothing is left to declare.
-    }
+    public void Configure(CommandConfigurationBuilder<RenameScopeCommand> builder) =>
+        builder.RequirePermissions(ScopePermissions.Manage);
 }
