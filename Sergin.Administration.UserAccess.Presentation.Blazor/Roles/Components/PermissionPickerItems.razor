@@ -1,0 +1,14 @@
+@foreach (PermissionPickerSection picker in PickerSections)
+{
+    <PermissionSubheader>@picker.Title</PermissionSubheader>
+    @foreach (PermissionCatalogGroup group in picker.Groups)
+    {
+        <PermissionSubheader Class="pl-6">@Localizer.Text(group.Title)</PermissionSubheader>
+        @foreach (PermissionDefinition definition in group.Permissions.Where(definition => Exclude?.Invoke(definition) != true))
+        {
+            <MudSelectItem T="string" Value="@definition.Permission.Value">
+                @PermissionLabels.Of(Catalog, Localizer, definition) <MudText Typo="Typo.caption">@definition.Permission.Value</MudText>
+            </MudSelectItem>
+        }
+    }
+}

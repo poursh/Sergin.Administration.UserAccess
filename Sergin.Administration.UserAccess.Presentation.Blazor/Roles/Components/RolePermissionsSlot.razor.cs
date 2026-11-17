@@ -9,7 +9,6 @@ using Sergin.SharedKernel.Domain;
 using Sergin.SharedKernel.Domain.Securities;
 using Sergin.SharedKernel.Presentation.Blazor.Aggregates;
 using Sergin.SharedKernel.Presentation.Blazor.Errors;
-using Sergin.SharedKernel.Presentation.Blazor.Modules;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Roles.Components;
 
@@ -39,10 +38,6 @@ public sealed partial class RolePermissionsSlot
     [Inject]
     private IStringLocalizer Localizer { get; set; } = default!;
 
-    // The modules this host shows, whose drawer group titles name the picker's module headings.
-    [Inject]
-    private SerginUiModuleCatalog Modules { get; set; } = default!;
-
     private IReadOnlyCollection<string> Granted => (Context.Record as RoleQueryResponse)?.Permissions ?? [];
 
     // The role's grants the catalogue defines, shown by label; a grant it no longer defines is listed apart by its
@@ -52,9 +47,6 @@ public sealed partial class RolePermissionsSlot
     private IReadOnlyCollection<string> GrantedUnknown => [.. Granted.Where(permission => TryDefine(permission) is null)];
 
     private RoleId Role => new(Context.TargetIds[0]);
-
-    // The pickers' module headings, one per drawer group, so modules sharing a group show once.
-    private IReadOnlyList<PermissionPickerSection> PickerSections => PermissionLabels.Sections(Catalog, Modules, Localizer);
 
     private string LabelOf(string? name) => name is null ? string.Empty : PermissionLabels.Of(Catalog, Localizer, name);
 

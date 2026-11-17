@@ -1,17 +1,4 @@
 <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" MultiSelection="true" ToStringFunc="@LabelOf" MultiSelectionTextFunc="@SelectedText"
            SelectedValues="Picked" SelectedValuesChanged="PickedChangedAsync" Label="@Localizer.Text(Field.Label.Label)">
-    @foreach (PermissionPickerSection picker in PickerSections)
-    {
-        <PermissionSubheader>@picker.Title</PermissionSubheader>
-        @foreach (PermissionCatalogGroup group in picker.Groups)
-        {
-            <PermissionSubheader Class="pl-6">@Localizer.Text(group.Title)</PermissionSubheader>
-            @foreach (PermissionDefinition definition in group.Permissions)
-            {
-                <MudSelectItem T="string" Value="@definition.Permission.Value">
-                    @PermissionLabels.Of(Catalog, Localizer, definition) <MudText Typo="Typo.caption">@definition.Permission.Value</MudText>
-                </MudSelectItem>
-            }
-        }
-    }
+    <PermissionPickerItems />
 </MudSelect>

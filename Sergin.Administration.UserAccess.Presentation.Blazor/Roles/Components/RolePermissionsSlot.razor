@@ -12,20 +12,7 @@
         }
     }
     <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" @bind-Value="permissionToGrant" ToStringFunc="@LabelOf" Label="@Localizer.Text(RoleUiTexts.AddPermission)">
-        @foreach (PermissionPickerSection picker in PickerSections)
-        {
-            <PermissionSubheader>@picker.Title</PermissionSubheader>
-            @foreach (PermissionCatalogGroup group in picker.Groups)
-            {
-                <PermissionSubheader Class="pl-6">@Localizer.Text(group.Title)</PermissionSubheader>
-                @foreach (PermissionDefinition definition in group.Permissions.Where(definition => !IsGranted(definition)))
-                {
-                    <MudSelectItem T="string" Value="@definition.Permission.Value">
-                        @PermissionLabels.Of(Catalog, Localizer, definition) <MudText Typo="Typo.caption">@definition.Permission.Value</MudText>
-                    </MudSelectItem>
-                }
-            }
-        }
+        <PermissionPickerItems Exclude="IsGranted" />
     </MudSelect>
     <MudButton Variant="Variant.Outlined" Color="Color.Primary" Class="mt-2"
                Disabled="@(busy || string.IsNullOrEmpty(permissionToGrant))" OnClick="GrantPickedAsync">@Localizer.Text(CommonTexts.Add)</MudButton>

@@ -3,10 +3,10 @@ using Sergin.Administration.UserAccess.Application.Contracts.Roles.Commands.Crea
 
 namespace Sergin.Administration.UserAccess.Application.Configurations.Roles.Commands.Create;
 
-// Without a permission: the handler checks the permission against the scope the command names. It only names the
-// texts its validation messages read their field labels from.
+// Requires Manage: Role is not Scoped(), so the pipeline checks it on any scope, and the handler still checks it on
+// the role's owner scope.
 internal sealed class CreateRoleCommandConfiguration : ICommandConfiguration<CreateRoleCommand>
 {
     public void Configure(CommandConfigurationBuilder<CreateRoleCommand> builder) =>
-        builder.Texts(RoleTexts.Category);
+        builder.RequirePermissions(RolePermissions.Manage).Texts(RoleTexts.Category);
 }
