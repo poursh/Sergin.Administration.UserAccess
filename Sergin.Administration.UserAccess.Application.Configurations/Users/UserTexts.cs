@@ -17,6 +17,8 @@ public static class UserTexts
 
     public static readonly FieldText UserName = Category.Field("UserName", "User name");
 
+    public static readonly FieldText IsActive = Category.Field("IsActive", "Active");
+
     public static readonly TextDefinition Singular = Category.Text("Singular", "User");
 
 }

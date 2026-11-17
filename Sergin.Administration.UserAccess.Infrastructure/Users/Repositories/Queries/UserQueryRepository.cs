@@ -19,7 +19,7 @@ internal sealed class UserQueryRepository(
 
         string queries =
            """
-            SELECT id, user_name AS userName
+            SELECT id, user_name AS userName, is_active AS isActive
             FROM ua.users
             WHERE id = @Id;
             """;
