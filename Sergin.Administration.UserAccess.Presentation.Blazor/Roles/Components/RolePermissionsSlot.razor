@@ -1,0 +1,19 @@
+<SerginEntityListView TitleText="RoleTexts.Permissions.Label" Count="Granted.Count">
+    @foreach (PermissionDefinition definition in GrantedDefined)
+    {
+        <MudChip T="string" Value="@definition.Permission.Value" OnClose="@(_ => RevokeAsync(definition.Permission.Value))">@PermissionLabels.Of(Catalog, Localizer, definition)</MudChip>
+    }
+    @if (GrantedUnknown.Count > 0)
+    {
+        <MudText Typo="Typo.subtitle2">@Localizer.Text(RoleUiTexts.Unknown)</MudText>
+        @foreach (string permission in GrantedUnknown)
+        {
+            <MudChip T="string" Value="@permission" OnClose="@(_ => RevokeAsync(permission))">@permission</MudChip>
+        }
+    }
+    <MudSelect Variant="Variant.Outlined" Margin="Margin.Dense" T="string" @bind-Value="permissionToGrant" ToStringFunc="@LabelOf" Label="@Localizer.Text(RoleUiTexts.AddPermission)">
+        <PermissionPickerItems Exclude="IsGranted" />
+    </MudSelect>
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" Class="mt-2"
+               Disabled="@(busy || string.IsNullOrEmpty(permissionToGrant))" OnClick="GrantPickedAsync">@Localizer.Text(CommonTexts.Add)</MudButton>
+</SerginEntityListView>

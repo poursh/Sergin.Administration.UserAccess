@@ -9,7 +9,7 @@ namespace Sergin.Administration.UserAccess.Presentation.Blazor.Scopes.Components
 
 /// <summary>
 /// The layout of the scope pages: the scopes the caller may read on the left, the page at the current route — the
-/// prompt, a scope's <c>ScopeDetailView</c> or a new scope's form — on the right. A scope whose parent the caller
+/// prompt, a scope's generated detail view or a new scope's form — on the right. A scope whose parent the caller
 /// cannot reach shows as a root.
 /// </summary>
 public sealed partial class ScopeTreeLayout

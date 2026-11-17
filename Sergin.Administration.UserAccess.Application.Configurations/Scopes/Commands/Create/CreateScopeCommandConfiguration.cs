@@ -3,10 +3,11 @@ using Sergin.Administration.UserAccess.Application.Contracts.Scopes.Commands.Cre
 
 namespace Sergin.Administration.UserAccess.Application.Configurations.Scopes.Commands.Create;
 
-// Without a permission: the handler checks the permission against the scope the command names. It only names the
-// texts its validation messages read their field labels from.
+// Requires Manage: Scope is not Scoped(), so the pipeline checks it on any scope, and the handler still checks it on
+// the target scope.
+// It also names the texts its validation messages read their field labels from.
 internal sealed class CreateScopeCommandConfiguration : ICommandConfiguration<CreateScopeCommand>
 {
     public void Configure(CommandConfigurationBuilder<CreateScopeCommand> builder) =>
-        builder.Texts(ScopeTexts.Category);
+        builder.Texts(ScopeTexts.Category).RequirePermissions(ScopePermissions.Manage);
 }

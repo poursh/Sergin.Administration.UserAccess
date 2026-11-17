@@ -3,12 +3,12 @@ using Sergin.Administration.UserAccess.Application.Contracts.Roles.Commands.Revo
 
 namespace Sergin.Administration.UserAccess.Application.Configurations.Roles.Commands.RevokePermission;
 
-// No RequirePermissions: the permission is checked against the target scope in the handler, which is the
-// record's own scope rather than the scope the caller is working in.
+// Requires Manage: Role is not Scoped(), so the pipeline checks it on any scope, and the handler still checks it on
+// the role's owner scope.
 internal sealed class RevokeRolePermissionCommandConfiguration : ICommandConfiguration<RevokeRolePermissionCommand>
 {
     public void Configure(CommandConfigurationBuilder<RevokeRolePermissionCommand> builder)
     {
-        // Its root and its expected version come from the record's type; nothing is left to declare.
+        builder.RequirePermissions(RolePermissions.Manage);
     }
 }

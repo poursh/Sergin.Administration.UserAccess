@@ -13,6 +13,9 @@ public static class AssignmentTexts
 
     private static readonly TextCategory errors = Category.Child("Errors");
 
+    /// <summary>The assignment's name: the generated user detail view names its child entity with it.</summary>
+    public static readonly TextDefinition Singular = Category.Text("Singular", "Assignment");
+
     public static readonly FieldText RoleId = Category.Field("RoleId", "Role");
 
     public static readonly FieldText ScopeId = Category.Field("ScopeId", "Scope");
