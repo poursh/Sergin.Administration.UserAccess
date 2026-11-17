@@ -1,9 +1,0 @@
-@* The detail's "Under" field: a link to the parent scope, or the tree's root when there is none. *@
-@if (Parent is { } parent)
-{
-    <MudLink Href="@($"/ua/scopes/{parent.Id}")">@parent.Name</MudLink>
-}
-else
-{
-    @Localizer.Text(ScopeUiTexts.TreeRoot)
-}

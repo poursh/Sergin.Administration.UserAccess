@@ -1,7 +1,6 @@
 @page "/ua/scopes/{Id:guid}"
 @layout ScopeTreeLayout
 
-<SerginTreeSelect Node="@Id.ToString()" />
 @* Keyed: moving from one scope to another in the tree builds a fresh view, so no load, form value or
    edit of the last scope carries over. *@
 <SerginGeneratedDetailView TRoot="Sergin.Administration.UserAccess.Domain.Scopes.Scope" @key="Id" Id="Id" />
