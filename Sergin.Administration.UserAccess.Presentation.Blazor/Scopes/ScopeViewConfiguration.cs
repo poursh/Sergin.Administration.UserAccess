@@ -14,8 +14,8 @@ namespace Sergin.Administration.UserAccess.Presentation.Blazor.Scopes;
 /// <summary>
 /// The scope's generated views, drawn inside the scope tree's pane: the detail has the name inline-editable, a parent
 /// link, a move and delete only for a scope that has a parent (the root offers neither), a delete that asks whether to
-/// cascade and leaves for the parent, a new child scope and a new role here as header actions, and its child scopes and
-/// usable roles in its own slot. There is no generated list: the list route is the tree page.
+/// cascade and leaves for the parent, a new child scope and a new role here as header actions, its child scopes in the
+/// generated tree's children section, and the roles usable here in its own slot (<c>ScopeRolesSlot</c>). There is no generated list: the list route is the tree page.
 /// </summary>
 internal sealed class ScopeViewConfiguration : IAggregateViewConfiguration<Scope>
 {
