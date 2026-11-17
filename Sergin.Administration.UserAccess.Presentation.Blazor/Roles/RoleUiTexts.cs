@@ -17,8 +17,6 @@ public static class RoleUiTexts
     public static readonly TextDefinition InheritableOnCreate =
         category.Text("InheritableOnCreate", "Inheritable: scopes below this one can use it too");
 
-    public static readonly TextDefinition InheritableOnDetail = category.Text("InheritableOnDetail", "Scopes below the owner can use it too");
-
     public static readonly TextDefinition Unknown =
         category.Text("Unknown", "Unknown", "Heads the granted permissions no module defines any more.");
 
@@ -30,7 +28,4 @@ public static class RoleUiTexts
     public static readonly TextDefinition DeleteTitle = category.Text("DeleteTitle", "Delete role");
 
     public static readonly TextDefinition DeleteConfirm = category.Text("DeleteConfirm", "Delete {Name}? It can no longer be assigned.");
-
-    public static readonly TextDefinition DeleteCascadeConfirm =
-        category.Text("DeleteCascadeConfirm", "Delete {Name} and revoke every assignment of it?");
 }
