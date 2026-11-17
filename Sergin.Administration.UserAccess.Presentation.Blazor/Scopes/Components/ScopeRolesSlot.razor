@@ -1,9 +1,6 @@
 @using Sergin.Administration.UserAccess.Application.Contracts.Scopes.Commands.GetOne
 @if (Context.Record is ScopeQueryResponse)
 {
-    <MudText Typo="Typo.h6" Class="mt-6 mb-2">@Localizer.Text(ScopeUiTexts.ChildScopes)</MudText>
-    <ScopeTreeTable Scopes="tree" UnderId="Context.TargetIds[0]" EmptyMessage="ScopeUiTexts.NoChildScopes" />
-
     <MudText Typo="Typo.h6" Class="mt-6 mb-2">@Localizer.Text(ScopeUiTexts.RolesUsableHere)</MudText>
     <MudSimpleTable Hover="true" Dense="true">
         <thead>

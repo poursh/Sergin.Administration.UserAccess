@@ -22,17 +22,11 @@ public static class ScopeUiTexts
 
     public static readonly TextDefinition NewRoleHere = category.Text("NewRoleHere", "New role here");
 
-    public static readonly TextDefinition SubScope = category.Text("SubScope", "Sub-scope");
-
     public static readonly TextDefinition Move = category.Text("Move", "Move");
 
     public static readonly TextDefinition ChildScopes = category.Text("ChildScopes", "Child scopes");
 
     public static readonly TextDefinition NoChildScopes = category.Text("NoChildScopes", "No child scopes.");
-
-    public static readonly TextDefinition NoScopes = category.Text("NoScopes", "No scopes.");
-
-    public static readonly TextDefinition Level = category.Text("Level", "Level");
 
     public static readonly TextDefinition RolesUsableHere = category.Text("RolesUsableHere", "Roles usable here");
 
