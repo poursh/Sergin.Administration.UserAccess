@@ -2,7 +2,6 @@ using MudBlazor;
 using Sergin.Administration.UserAccess.Application.Configurations.Scopes;
 using Sergin.Administration.UserAccess.Application.Configurations.Users;
 using Sergin.SharedKernel.Modules;
-using Sergin.SharedKernel.Presentation.Blazor.Modules;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor;
 
