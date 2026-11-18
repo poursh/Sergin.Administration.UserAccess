@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Sergin.SharedKernel.Application.Securities.Authorization;
 using Sergin.SharedKernel.Domain.Securities;
-using Sergin.SharedKernel.Presentation.Blazor.Aggregates;
+using Sergin.SharedKernel.Presentation.Blazor.Aggregates.Model;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Roles.Components;
 

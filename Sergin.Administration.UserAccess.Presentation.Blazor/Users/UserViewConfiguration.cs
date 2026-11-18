@@ -3,7 +3,7 @@ using Sergin.Administration.UserAccess.Application.Configurations.Users.Assignme
 using Sergin.Administration.UserAccess.Domain.Users;
 using Sergin.Administration.UserAccess.Domain.Users.Assignments;
 using Sergin.Administration.UserAccess.Presentation.Blazor.Users.Assignments.Components;
-using Sergin.SharedKernel.Presentation.Blazor.Aggregates;
+using Sergin.SharedKernel.Presentation.Blazor.Aggregates.Configuration;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Users;
 
