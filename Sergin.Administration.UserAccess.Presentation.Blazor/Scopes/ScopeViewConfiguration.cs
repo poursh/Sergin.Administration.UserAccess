@@ -7,7 +7,8 @@ using Sergin.Administration.UserAccess.Application.Contracts.Scopes.Commands.Ren
 using Sergin.Administration.UserAccess.Domain.Scopes;
 using Sergin.Administration.UserAccess.Presentation.Blazor.Scopes.Components;
 using MudBlazor;
-using Sergin.SharedKernel.Presentation.Blazor.Aggregates;
+using Sergin.SharedKernel.Presentation.Blazor.Aggregates.Configuration;
+using Sergin.SharedKernel.Presentation.Blazor.Aggregates.Model;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Scopes;
 

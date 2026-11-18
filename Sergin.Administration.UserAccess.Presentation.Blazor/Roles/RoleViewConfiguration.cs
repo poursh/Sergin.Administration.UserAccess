@@ -6,7 +6,8 @@ using Sergin.Administration.UserAccess.Application.Contracts.Roles.Commands.SetI
 using Sergin.Administration.UserAccess.Domain.Roles;
 using Sergin.Administration.UserAccess.Domain.Scopes;
 using Sergin.Administration.UserAccess.Presentation.Blazor.Roles.Components;
-using Sergin.SharedKernel.Presentation.Blazor.Aggregates;
+using Sergin.SharedKernel.Presentation.Blazor.Aggregates.Configuration;
+using Sergin.SharedKernel.Presentation.Blazor.Aggregates.Model;
 
 namespace Sergin.Administration.UserAccess.Presentation.Blazor.Roles;
 
