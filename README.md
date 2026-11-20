@@ -7,7 +7,7 @@
 [![Embed-only](https://img.shields.io/badge/builds-embed--only-B45309)](#this-repository-does-not-build-on-its-own)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2E7D32)](LICENSE)
 
-Sergin is a .NET 10 modular monolith. Its host, [Sergin.MeterMinder](https://github.com/poursh/Sergin.MeterMinder), composes this module with **DeviceManagement**, a head-end system for smart electricity, gas and water meters. Every other module depends on this one for authorization.
+Sergin is a .NET 10 modular monolith. Its host, [Sergin.MeterMinder](https://github.com/poursh/Sergin.MeterMinder), composes this module with **DeviceManagement**, a head-end system for smart electricity, gas and water meters, and **Settings** (languages and translations), which sits beside it under `src/Modules/Administration/` and shares the drawer's Administration group. Every other module depends on this one for authorization.
 
 ## What it does
 
@@ -68,6 +68,8 @@ The module has one migration, `InitialCreate`, which seeds the root scope and tw
 | `/ua/scopes`, `/ua/scopes/new`, `/ua/scopes/{id}` | The scope tree the caller can see, create, and detail with rename, move, delete and the scope's roles |
 | `/ua/roles/new`, `/ua/roles/{id}` | Create a role under a scope; detail with rename, inheritable, grant and revoke, delete |
 
+The pages are **generated** by SharedKernel's aggregate views from each aggregate's command types and its view configuration (`UserViewConfiguration`, `RoleViewConfiguration`, `ScopeViewConfiguration` in the Blazor library); a page file holds only `@page`, its layout and one generated view. The scope pages render inside a tree layout (`ScopeTreeLayout`) that keeps expanded branches and scroll between them.
+
 Every slice lives under `<Aggregate>/Commands/<Feature>/` — queries included — in `.Application.Contracts` (the records) and `.Application` (the handler and its validator), mirrored in `.Infrastructure` and both presentation projects. Every write command has a FluentValidation validator. The minimal-API routes under `/ua/users`, `/ua/scopes` and `/ua/roles` are compiled and kept current but not served: the platform currently has no Web API host, and the Blazor pages dispatch to the same handlers in-process through `ISerginDispatcher`.
 
 ### Outbox
@@ -99,12 +101,12 @@ The host runs this module's integration tests (`tests/Sergin.MeterMinder.Integra
 |---|---|
 | `Sergin.Administration.UserAccess.Domain` | `User`, `Role` and `Scope` aggregates, strongly-typed IDs, repository interfaces |
 | `Sergin.Administration.UserAccess.Application.Contracts` | The command, query and response records — all a presentation layer needs |
-| `Sergin.Administration.UserAccess.Application.Configurations` | Request policy (`ICommandConfiguration`), aggregate features, and the `<Aggregate>Permissions` definitions |
+| `Sergin.Administration.UserAccess.Application.Configurations` | Request policy (`ICommandConfiguration`), aggregate features, the `<Aggregate>Permissions` definitions and the declared texts (`<Aggregate>Texts`) |
 | `Sergin.Administration.UserAccess.Application` | Handlers, validators, query-repository interfaces, `IUserAccessUnitOfWork`, the authorization implementations (`ScopedPermissionChecker`, `ScopeDirectory`, the grant cache), `ExternalIdentityResolver`, `DevUserSeeder` |
 | `Sergin.Administration.UserAccess.Infrastructure` | EF Core write repositories; raw-SQL query repositories, including the effective-grant read and `UserDirectory` |
 | `Sergin.Administration.UserAccess.Infrastructure.Data` | `UserAccessDbContext`, entity configurations, value converters, migrations |
 | `Sergin.Administration.UserAccess.Presentation.WebApi` | Minimal-API endpoints |
-| `Sergin.Administration.UserAccess.Presentation.Blazor` | MudBlazor pages under `Users/`, `Scopes/` and `Roles/`, markup in `.razor`, code in `.razor.cs` |
+| `Sergin.Administration.UserAccess.Presentation.Blazor` | Generated pages and their view configurations under `Users/`, `Scopes/` and `Roles/`, slot components, the UI-only texts (`<Aggregate>UiTexts`); markup in `.razor`, code in `.razor.cs` |
 | `Sergin.Administration.UserAccess` | `UserAccessModule` — the composition root implementing `ISerginWebApiModule` and `ISerginWebUiModule` |
 
 Conventions, per-project detail and the reasoning behind each quirk are in [`.claude/CLAUDE.md`](.claude/CLAUDE.md). The design of scoped RBAC is in the host repository at `docs/superpowers/specs/2026-10-09-scoped-rbac-design.md`. `Users/` is the canonical reference slice for the whole platform — when in doubt about the right shape for a new feature elsewhere, read the matching file here first.
