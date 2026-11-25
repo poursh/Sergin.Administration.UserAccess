@@ -66,7 +66,7 @@ The module has one migration, `InitialCreate`, which seeds the root scope and tw
 |---|---|
 | `/ua/users`, `/ua/users/new`, `/ua/users/{id}` | User list, create, and detail with deactivate and the embedded assignments sections (assign, revoke, effective permissions) |
 | `/ua/scopes`, `/ua/scopes/new`, `/ua/scopes/{id}` | The scope tree the caller can see, create, and detail with rename, move, delete and the scope's roles |
-| `/ua/roles/new`, `/ua/roles/{id}` | Create a role under a scope; detail with rename, inheritable, grant and revoke, delete |
+| `/ua/scopes/{scopeId}/roles/new`, `/ua/scopes/{scopeId}/roles/{id}` | Create a role owned by the scope; detail with rename, inheritable, grant and revoke, delete. Both open inside the scope tree, under the owner scope |
 
 The pages are **generated** by SharedKernel's aggregate views from each aggregate's command types and its view configuration (`UserViewConfiguration`, `RoleViewConfiguration`, `ScopeViewConfiguration` in the Blazor library); a page file holds only `@page`, its layout and one generated view. The scope pages render inside a tree layout (`ScopeTreeLayout`) that keeps expanded branches and scroll between them.
 

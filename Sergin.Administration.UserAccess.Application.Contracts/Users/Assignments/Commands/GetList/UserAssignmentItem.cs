@@ -4,6 +4,7 @@ public sealed record UserAssignmentItem(
     Guid Id,
     Guid RoleId,
     string RoleName,
+    Guid RoleOwnerScopeId,
     Guid ScopeId,
     string ScopeName,
     bool IncludeSubtree,
