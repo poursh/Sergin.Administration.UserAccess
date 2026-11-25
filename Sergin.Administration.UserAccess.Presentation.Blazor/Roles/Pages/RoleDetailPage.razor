@@ -1,4 +1,5 @@
-@page "/ua/roles/{Id:guid}"
-@layout SerginPageLayout
+@page "/ua/scopes/{ScopeId:guid}/roles/{Id:guid}"
+@layout ScopeTreeLayout
 
-<SerginGeneratedDetailView TRoot="Sergin.Administration.UserAccess.Domain.Roles.Role" Id="Id" />
+@* Keyed: moving from one role to another builds a fresh view, so no load or edit of the last role carries over. *@
+<SerginGeneratedDetailView TRoot="Sergin.Administration.UserAccess.Domain.Roles.Role" @key="Id" Id="Id" />

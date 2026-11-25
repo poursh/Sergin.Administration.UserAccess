@@ -44,7 +44,7 @@ internal sealed class ScopeViewConfiguration : IAggregateViewConfiguration<Scope
                 .Link(scope => $"/ua/scopes/{scope.ParentId}").WhenEmpty(ScopeUiTexts.TreeRoot));
         view.Form<CreateScopeCommand>(form => form.Title(ScopeUiTexts.New));
 
-        view.Link(ScopeUiTexts.NewRoleHere, Icons.Material.Outlined.Badge, id => $"/ua/roles/new?scopeId={id}");
+        view.Link(ScopeUiTexts.NewRoleHere, Icons.Material.Outlined.Badge, id => $"/ua/scopes/{id}/roles/new");
         view.Slot<ScopeRolesSlot>(SerginViewSlot.DetailEntities);
     }
 }

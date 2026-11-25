@@ -14,7 +14,7 @@
             @foreach (AssignableRoleItem role in roles)
             {
                 <tr>
-                    <td><MudLink Href="@($"/ua/roles/{role.Id}")">@role.Name</MudLink></td>
+                    <td><MudLink Href="@($"/ua/scopes/{role.OwnerScopeId}/roles/{role.Id}")">@role.Name</MudLink></td>
                     <td>@role.OwnerScopeName</td>
                     <td>@Localizer.Text(role.IsInheritable ? ScopeUiTexts.Yes : ScopeUiTexts.No)</td>
                 </tr>

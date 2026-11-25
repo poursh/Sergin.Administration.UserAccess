@@ -20,7 +20,7 @@
                 @foreach (UserAssignmentItem assignment in assignments)
                 {
                     <tr>
-                        <td><MudLink Href="@($"/ua/roles/{assignment.RoleId}")">@assignment.RoleName</MudLink></td>
+                        <td><MudLink Href="@($"/ua/scopes/{assignment.RoleOwnerScopeId}/roles/{assignment.RoleId}")">@assignment.RoleName</MudLink></td>
                         <td><MudLink Href="@($"/ua/scopes/{assignment.ScopeId}")">@assignment.ScopeName</MudLink></td>
                         <td>@Covers(assignment.IncludeSubtree)</td>
                         <td>@Period(assignment)</td>

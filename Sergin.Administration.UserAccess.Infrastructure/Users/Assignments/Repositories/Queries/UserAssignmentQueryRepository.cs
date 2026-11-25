@@ -14,7 +14,7 @@ internal sealed class UserAssignmentQueryRepository(IDbConnectionFactory connect
         // History included: a revoked assignment, or one whose role or scope was deleted, still shows what it was.
         string query =
             """
-            SELECT a.id, a.role_id AS roleId, r.name AS roleName, a.scope_id AS scopeId, s.name AS scopeName,
+            SELECT a.id, a.role_id AS roleId, r.name AS roleName, r.owner_scope_id AS roleOwnerScopeId, a.scope_id AS scopeId, s.name AS scopeName,
                    a.include_subtree AS includeSubtree, a.valid_from_utc AS validFromUtc, a.valid_until_utc AS validUntilUtc,
                    a.revoked_at_utc AS revokedAtUtc
             FROM ua.role_assignments a
